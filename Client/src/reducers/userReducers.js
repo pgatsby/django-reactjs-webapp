@@ -59,7 +59,7 @@ export const userLoginReducer = createReducer(
       })
       .addCase(USER_LOGIN_SUCCESS, (state, action) => {
         state.loading = false;
-        state.userInfo = action.payload;
+        state.tokens = action.payload;
       })
       .addCase(USER_LOGIN_FAIL, (state, action) => {
         state.loading = false;

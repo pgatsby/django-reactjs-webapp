@@ -14,7 +14,7 @@ import {
 import Message from "../components/Message";
 import { addToCart, removeFromCart } from "../reducers/cartReducers";
 
-function CartPage() {
+function CartScreen() {
   const product_id = useParams().id;
   const qty = Number(useLocation().search.split("=")[1]);
 
@@ -124,4 +124,4 @@ function CartPage() {
   );
 }
 
-export default CartPage;
+export default CartScreen;

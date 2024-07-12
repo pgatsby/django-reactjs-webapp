@@ -1,7 +1,7 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const CART_ADD_ITEM = "CART_ADD_ITEM";
+const CART_ADD_ITEM = "CART_ADD_ITEM";
 
 const CART_REMOVE_ITEM = "CART_REMOVE_ITEM";
 
@@ -34,7 +34,7 @@ export const removeFromCart = (id) => (dispatch, getState) => {
     type: CART_REMOVE_ITEM,
     payload: id,
   });
-  
+
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 

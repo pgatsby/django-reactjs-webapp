@@ -16,7 +16,7 @@ import { fetchProductById } from "../reducers/productReducers.js";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 
-function ProductPage() {
+function ProductScreen() {
   const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
@@ -134,4 +134,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default ProductScreen;

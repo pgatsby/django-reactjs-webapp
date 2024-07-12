@@ -8,7 +8,7 @@ import { fetchProducts } from "../reducers/productReducers.js";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 
-function HomePage() {
+function HomeScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,4 +41,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default HomeScreen;

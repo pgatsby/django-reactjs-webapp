@@ -4,9 +4,10 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header.js";
 import Footer from "./components/Footer.js";
 
-import HomePage from "./pages/HomePage.js";
-import ProductPage from "./pages/ProductPage.js";
-import CartPage from "./pages/CartPage.js";
+import HomeScreen from "./screens/HomeScreen.js";
+import ProductScreen from "./screens/ProductScreen.js";
+import CartScreen from "./screens/CartScreen.js";
+import LoginScreen from "./screens/LoginScreen.js";
 
 function App() {
   return (
@@ -15,9 +16,10 @@ function App() {
       <main className="py-3">
         <Container>
           <Routes>
-            <Route path="/" element={<HomePage />} exact />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/cart/:id?" element={<CartPage />} />
+            <Route path="/" element={<HomeScreen />} exact />
+            <Route path="/login" element={<LoginScreen />} exact />
+            <Route path="/product/:id" element={<ProductScreen />} />
+            <Route path="/cart/:id?" element={<CartScreen />} />
           </Routes>
         </Container>
       </main>

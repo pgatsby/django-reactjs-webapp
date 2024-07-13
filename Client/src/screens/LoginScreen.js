@@ -19,15 +19,15 @@ function LoginScreen() {
 
   const loc_redirect = location.search ? location.search.split("=")[1] : "/";
 
-  const user = useSelector((state) => state.user);
+  const userLogin = useSelector((state) => state.userLogin);
 
-  const { error, loading, tokens } = user;
+  const { error, loading, access } = userLogin;
 
   useEffect(() => {
-    if (tokens) {
+    if (access) {
       navigate("/");
     }
-  }, [location, tokens, loc_redirect]);
+  }, [location, access, loc_redirect]);
 
   const submitHandler = (e) => {
     e.preventDefault();

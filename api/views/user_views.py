@@ -11,9 +11,36 @@ from api.serializers import UserSerializer
 from rest_framework import status
 
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUser(request):
+    user = request.user
+    data = request.data
+
+    try:
+
+        user.first_name = data['first_name']
+        user.last_name = data['last_name']
+        user.username = data['username']
+        user.email = data['email']
+
+        if data['password'] != '':
+            user.password = make_password(data['password'])
+
+        user.save()
+
+        return Response({
+            'detail': 'Profile updated'
+        }, status=status.HTTP_200_OK)
+
+    except:
+        return Response({
+            'detail': 'Cannot update user'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['POST'])
 def registerUser(request):
-
     data = request.data
     try:
         user = User.objects.create(

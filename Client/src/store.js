@@ -7,6 +7,7 @@ import { cartReducer } from "./reducers/cartReducers.js";
 import {
   userLoginReducer,
   userDetailsReducer,
+  userRegisterReducer,
 } from "./reducers/userReducers.js";
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   userLogin: userLoginReducer,
   userDetails: userDetailsReducer,
+  userRegister: userRegisterReducer,
 });
 
 const store = configureStore({

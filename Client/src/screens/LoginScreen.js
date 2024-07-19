@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader.js";
@@ -29,12 +29,15 @@ function LoginScreen() {
     }
   }, [location, access, loc_redirect]);
 
+  const resetForm = () => {
+    setUsername("");
+    setPassword("");
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(username, password));
-
-    setUsername("");
-    setPassword("");
+    resetForm();
   };
 
   return (
@@ -74,7 +77,9 @@ function LoginScreen() {
         <Col>
           New Customer?{" "}
           <Link
-            to={loc_redirect ? `/register?redirect=${redirect}` : `/register`}
+            to={
+              loc_redirect ? `/register?redirect=${loc_redirect}` : `/register`
+            }
           >
             Register
           </Link>

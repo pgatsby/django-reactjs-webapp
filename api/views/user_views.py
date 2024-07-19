@@ -5,8 +5,9 @@ from rest_framework.response import Response
 
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from api.serializers import UserSerializer, UserSerializerWithToken
+from api.serializers import UserSerializer
 from rest_framework import status
 
 
@@ -23,9 +24,13 @@ def registerUser(request):
             password=make_password(data['password'])
         )
 
-        serializer = UserSerializerWithToken(user, many=False)
+        if user:
+            tokens = RefreshToken.for_user(user)
 
-        return Response(serializer.data)
+            return Response({
+                'refresh': str(tokens),
+                'access': str(tokens.access_token)
+            })
 
     except:
         return Response({

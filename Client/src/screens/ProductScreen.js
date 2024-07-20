@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 
 import Rating from "../components/Rating.js";
-import { fetchProductById } from "../reducers/productReducers.js";
+import { fetchProductById } from "../actions/productActions.js";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 
@@ -118,7 +118,7 @@ function ProductScreen() {
                     <Button
                       onClick={addToCartHandler}
                       className="w-100"
-                      disabled={product.countInStock == 0}
+                      disabled={product.countInStock === 0}
                       type="button"
                     >
                       Add to Cart

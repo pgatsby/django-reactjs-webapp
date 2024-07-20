@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 import FormContainer from "../components/FormContainer.js";
-import { login } from "../reducers/userReducers.js";
+import { login } from "../actions/userActions.js";
 
 function LoginScreen() {
   const [username, setUsername] = useState("");
@@ -27,7 +27,7 @@ function LoginScreen() {
     if (access) {
       navigate("/");
     }
-  }, [location, access, loc_redirect]);
+  }, [navigate, location, access, loc_redirect]);
 
   const resetForm = () => {
     setUsername("");

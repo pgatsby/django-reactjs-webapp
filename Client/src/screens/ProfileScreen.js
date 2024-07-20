@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 import FormContainer from "../components/FormContainer.js";
-import { updateUserProfile } from "../reducers/userReducers.js";
+import {
+  updateUserProfile,
+  USER_UPDATE_PROFILE_RESET,
+} from "../actions/userActions.js";
 
 function ProfileScreen() {
   const dispatch = useDispatch();
@@ -31,7 +34,7 @@ function ProfileScreen() {
       navigate("/login");
     } else {
       if (success) {
-        dispatch({ type: "USER_UPDATE_PROFILE_RESET" });
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         setPassword("");
         setCheckPassword("");
       }
@@ -40,11 +43,11 @@ function ProfileScreen() {
       setUsername(user.username);
       setEmail(user.email);
     }
-  }, [dispatch, user, success]);
+  }, [dispatch, user, success, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password != checkPassword) {
+    if (password !== checkPassword) {
       setMessage("Passwords do not match");
     } else {
       dispatch(

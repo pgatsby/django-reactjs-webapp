@@ -41,7 +41,7 @@ function LoginScreen() {
   };
 
   return (
-    <FormContainer>
+    <FormContainer center xs={12} md={6}>
       <h1>Login</h1>
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}

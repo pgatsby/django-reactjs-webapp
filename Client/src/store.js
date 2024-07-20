@@ -8,6 +8,7 @@ import {
   userLoginReducer,
   userDetailsReducer,
   userRegisterReducer,
+  userUpdateProfileReducer,
 } from "./reducers/userReducers.js";
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userDetails: userDetailsReducer,
   userRegister: userRegisterReducer,
+  userUpdateProfile: userUpdateProfileReducer,
 });
 
 const store = configureStore({

@@ -17,7 +17,7 @@ function LoginScreen() {
 
   const navigate = useNavigate();
 
-  const loc_redirect = location.search ? location.search.split("=")[1] : "/";
+  const loc_redirect = location.search && location.search.split("=")[1];
 
   const userLogin = useSelector((state) => state.userLogin);
 
@@ -25,7 +25,7 @@ function LoginScreen() {
 
   useEffect(() => {
     if (access) {
-      navigate("/");
+      navigate(`/${loc_redirect}`);
     }
   }, [navigate, location, access, loc_redirect]);
 
@@ -49,7 +49,7 @@ function LoginScreen() {
         <Form.Group controlId="username">
           <Form.Label>Email Address / Username</Form.Label>
           <Form.Control
-            type="username"
+            type="text"
             placeholder="Enter Email or Username"
             value={username}
             onChange={(e) => {

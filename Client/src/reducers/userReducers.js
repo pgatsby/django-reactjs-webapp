@@ -35,7 +35,6 @@ export const userLoginReducer = createReducer(
       })
       .addCase(USER_LOGIN_SUCCESS, (state, action) => {
         return {
-          loading: false,
           ...action.payload,
         };
       })

@@ -15,7 +15,7 @@ This Django and ReactJS application demonstrates the effectiveness of their comb
 
 ## Getting Started
 
-Welcome to DRJS! This guide provides detailed steps to set up the environment and install this project on your local computer.
+Welcome to DRJS (django-reactjs-webapp)! This guide provides detailed steps to set up the environment and install this project on your local computer.
 
 ### Prerequisites
 
@@ -26,20 +26,21 @@ Before you begin, ensure you have the following installed:
 
 ### Installation
 
-Clone the repository > DRJS
+Clone the repository > django-reactjs-webapp
 
   ```bash
-  git clone https://github.com/p-gatsby/DRJS.git
+  git clone https://github.com/p-gatsby/django-reactjs-webapp.git
   ```
 
-Electron app installation ~ > DRJS > Client
+Electron app installation ~ > django-reactjs-webapp > Client
 
 - Install node dependencies
+  
   ```sh
   npm install
   ```
 
-Djano server installation ~ > DRJS
+Djano server installation ~ > django-reactjs-webapp
 
 - Install virtual environment:
 
@@ -55,11 +56,13 @@ Djano server installation ~ > DRJS
 
 ### Running the app
 
-- Run Django  ~ > DRJS
+- Run Django  ~ > django-reactjs-webapp
+  
   ```sh
   python manage.py runserver
   ```
-- Run React App ~ > DRJS > Client
+- Run React App ~ > django-reactjs-webapp > Client
+  
   ```sh
   npm start
   ```

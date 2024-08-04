@@ -10,6 +10,7 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
 } from "./reducers/userReducers.js";
+import { orderCreateReducer } from "./reducers/orderReducer.js";
 
 const rootReducer = combineReducers({
   productList: productListReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   userDetails: userDetailsReducer,
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  orderCreate: orderCreateReducer,
 });
 
 const store = configureStore({

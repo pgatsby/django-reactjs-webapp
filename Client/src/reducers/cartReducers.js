@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
   CART_ADD_ITEM,
+  CART_CLEAR_ITEMS,
   CART_REMOVE_ITEM,
   CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
@@ -52,6 +53,12 @@ export const cartReducer = createReducer(
         return {
           ...state,
           cartItems: state.cartItems.filter((p) => p.product !== item),
+        };
+      })
+      .addCase(CART_CLEAR_ITEMS, (state) => {
+        return {
+          ...state,
+          cartItems: [],
         };
       })
       .addCase(CART_SAVE_SHIPPING_ADDRESS, (state, action) => {

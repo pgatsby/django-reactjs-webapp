@@ -21,6 +21,9 @@ function PaymentScreen() {
     if (!shippingAddress.address) {
       navigate("/shipping");
     }
+    if (cart.paymentMethod) {
+      setPaymentMethod(cart.paymentMethod);
+    }
   });
 
   const submitHandler = (e) => {

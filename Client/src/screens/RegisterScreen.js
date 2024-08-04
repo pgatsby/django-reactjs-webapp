@@ -135,7 +135,12 @@ function RegisterScreen() {
 
       <Row className="py-3">
         <Col>
-          Already a Customer? <Link to="/login">Login</Link>
+          Already a Customer?{" "}
+          <Link
+            to={loc_redirect ? `/login?redirect=${loc_redirect}` : `/login`}
+          >
+            Login
+          </Link>
         </Col>
       </Row>
     </FormContainer>

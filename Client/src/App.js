@@ -11,6 +11,7 @@ import LoginScreen from "./screens/LoginScreen.js";
 import RegisterScreen from "./screens/RegisterScreen.js";
 import ProfileScreen from "./screens/ProfileScreen.js";
 import ShippingScreen from "./screens/ShippingScreen.js";
+import PaymentScreen from "./screens/PaymentScreen.js";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/login" element={<LoginScreen />} exact />
             <Route path="/profile" element={<ProfileScreen />} exact />
             <Route path="/shipping" element={<ShippingScreen />} exact />
+            <Route path="/payment" element={<PaymentScreen />} exact />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="/cart/:id?" element={<CartScreen />} />
           </Routes>

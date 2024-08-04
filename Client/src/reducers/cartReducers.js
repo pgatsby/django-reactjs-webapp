@@ -2,6 +2,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
+  CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
 } from "../actions/cartActions";
 
@@ -13,10 +14,15 @@ const shippingAddressFromLocalStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))
   : {};
 
+const paymentMethodFromLocalStorage = localStorage.getItem("paymentMethod")
+  ? JSON.parse(localStorage.getItem("paymentMethod"))
+  : "";
+
 export const cartReducer = createReducer(
   {
     cartItems: cartItemsFromLocalStorage,
     shippingAddress: shippingAddressFromLocalStorage,
+    paymentMethod: paymentMethodFromLocalStorage,
   },
   (builder) => {
     builder
@@ -52,6 +58,12 @@ export const cartReducer = createReducer(
         return {
           ...state,
           shippingAddress: action.payload,
+        };
+      })
+      .addCase(CART_SAVE_PAYMENT_METHOD, (state, action) => {
+        return {
+          ...state,
+          paymentMethod: action.payload,
         };
       });
   }

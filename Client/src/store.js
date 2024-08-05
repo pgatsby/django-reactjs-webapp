@@ -6,21 +6,25 @@ import {
 import { cartReducer } from "./reducers/cartReducers.js";
 import {
   userLoginReducer,
-  userDetailsReducer,
+  userInfoReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
 } from "./reducers/userReducers.js";
-import { orderCreateReducer } from "./reducers/orderReducer.js";
+import {
+  orderCreateReducer,
+  orderInfoReducer,
+} from "./reducers/orderReducer.js";
 
 const rootReducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
-  userDetails: userDetailsReducer,
+  userInfo: userInfoReducer,
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
+  orderInfo: orderInfoReducer,
 });
 
 const store = configureStore({

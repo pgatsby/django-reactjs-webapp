@@ -46,7 +46,7 @@ export const login = (username, password) => async (dispatch) => {
 
     localStorage.setItem("userLogin", JSON.stringify(data));
 
-    dispatch(getUserDetails());
+    dispatch(getUserInfo());
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -92,7 +92,7 @@ export const register =
         payload: data,
       });
 
-      dispatch(getUserDetails());
+      dispatch(getUserInfo());
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
@@ -138,7 +138,7 @@ export const updateUserProfile =
         payload: data,
       });
 
-      dispatch(getUserDetails());
+      dispatch(getUserInfo());
     } catch (error) {
       dispatch({
         type: USER_UPDATE_PROFILE_FAIL,
@@ -150,7 +150,7 @@ export const updateUserProfile =
     }
   };
 
-export const getUserDetails = () => async (dispatch, getState) => {
+export const getUserInfo = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_INFO_REQUEST,
@@ -172,7 +172,7 @@ export const getUserDetails = () => async (dispatch, getState) => {
       payload: data,
     });
 
-    localStorage.setItem("userDetails", JSON.stringify(data));
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_INFO_FAIL,
@@ -186,7 +186,7 @@ export const getUserDetails = () => async (dispatch, getState) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userLogin");
-  localStorage.removeItem("userDetails");
+  localStorage.removeItem("userInfo");
 
   dispatch({
     type: USER_LOGOUT,

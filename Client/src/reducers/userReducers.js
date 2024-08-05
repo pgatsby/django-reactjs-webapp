@@ -20,8 +20,8 @@ const userLoginFromLocalStorage = localStorage.getItem("userLogin")
   ? JSON.parse(localStorage.getItem("userLogin"))
   : null;
 
-const userDetailsFromLocalStorage = localStorage.getItem("userDetails")
-  ? JSON.parse(localStorage.getItem("userDetails"))
+const userInfoFromLocalStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
 export const userLoginReducer = createReducer(
@@ -48,9 +48,9 @@ export const userLoginReducer = createReducer(
   }
 );
 
-export const userDetailsReducer = createReducer(
+export const userInfoReducer = createReducer(
   {
-    user: userDetailsFromLocalStorage ? userDetailsFromLocalStorage : null,
+    user: userInfoFromLocalStorage ? userInfoFromLocalStorage : null,
   },
   (builder) => {
     builder

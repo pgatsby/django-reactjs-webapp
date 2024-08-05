@@ -6,6 +6,10 @@ export const ORDER_CREATE_SUCCESS = "ORDER_CREATE_SUCCESS";
 export const ORDER_CREATE_FAIL = "ORDER_CREATE_FAIL";
 export const ORDER_CREATE_RESET = "ORDER_CREATE_RESET";
 
+export const ORDER_INFO_REQUEST = "ORDER_INFO_REQUEST";
+export const ORDER_INFO_SUCCESS = "ORDER_INFO_SUCCESS";
+export const ORDER_INFO_FAIL = "ORDER_INFO_FAIL";
+
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -36,6 +40,39 @@ export const createOrder = (order) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const getOrderInfo = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_INFO_REQUEST,
+    });
+
+    const { access } = getState().userLogin;
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/orders/${id}/`, config);
+
+    dispatch({
+      type: ORDER_INFO_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: ORDER_INFO_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

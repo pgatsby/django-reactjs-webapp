@@ -15,7 +15,7 @@ function ProfileScreen() {
 
   const navigate = useNavigate();
 
-  const { user } = useSelector((state) => state.userDetails);
+  const { user } = useSelector((state) => state.userInfo);
 
   const { loading, success, error } = useSelector(
     (state) => state.userUpdateProfile

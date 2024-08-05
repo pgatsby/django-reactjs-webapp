@@ -5,7 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../actions/userActions.js";
 
 function Header() {
-  const { user } = useSelector((state) => state.userDetails);
+  const { user } = useSelector((state) => state.userInfo);
 
   const dispatch = useDispatch();
 

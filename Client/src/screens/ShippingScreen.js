@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer.js";
@@ -21,13 +21,13 @@ function ShippingScreen() {
 
   const userLogin = useSelector((state) => state.userLogin);
 
-  const { error, loading, access } = userLogin;
+  const { access } = userLogin;
 
   useEffect(() => {
     if (!access) {
       navigate("/");
     }
-  }, [navigate, access]);
+  }, [access, dispatch, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();

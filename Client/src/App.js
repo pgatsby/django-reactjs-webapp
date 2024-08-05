@@ -13,6 +13,7 @@ import ProfileScreen from "./screens/ProfileScreen.js";
 import ShippingScreen from "./screens/ShippingScreen.js";
 import PaymentScreen from "./screens/PaymentScreen.js";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen.js";
+import OrderScreen from "./screens/OrderScreen.js";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/shipping" element={<ShippingScreen />} exact />
             <Route path="/payment" element={<PaymentScreen />} exact />
             <Route path="/placeorder" element={<PlaceOrderScreen />} exact />
+            <Route path="/order/:id" element={<OrderScreen />} exact />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="/cart/:id?" element={<CartScreen />} />
           </Routes>

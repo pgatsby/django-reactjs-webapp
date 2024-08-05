@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { Form, Button, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer.js";
 import CheckoutSteps from "../components/CheckoutSteps.js";
@@ -24,7 +24,7 @@ function PaymentScreen() {
     if (cart.paymentMethod) {
       setPaymentMethod(cart.paymentMethod);
     }
-  });
+  },[cart.paymentMethod, shippingAddress, navigate, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();

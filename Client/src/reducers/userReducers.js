@@ -14,6 +14,7 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
+  USER_REGISTER_RESET,
 } from "../actions/userActions";
 
 const userLoginFromLocalStorage = localStorage.getItem("userLogin")
@@ -84,7 +85,7 @@ export const userRegisterReducer = createReducer({}, (builder) => {
       state.loading = false;
       state.error = action.payload;
     })
-    .addCase(USER_LOGOUT, () => {
+    .addCase(USER_REGISTER_RESET, () => {
       return {};
     });
 });

@@ -32,8 +32,6 @@ export const orderCreateReducer = createReducer({}, (builder) => {
 export const orderInfoReducer = createReducer(
   {
     loading: true,
-    orderItems: [],
-    shippingAddress: {},
   },
   (builder) => {
     builder
@@ -42,7 +40,6 @@ export const orderInfoReducer = createReducer(
       })
       .addCase(ORDER_INFO_SUCCESS, (state, action) => {
         state.loading = false;
-        state.success = true;
         state.order = action.payload;
       })
       .addCase(ORDER_INFO_FAIL, (state, action) => {

@@ -69,7 +69,6 @@ export const getOrderInfo = (id) => async (dispatch, getState) => {
       type: ORDER_INFO_SUCCESS,
       payload: data,
     });
-
   } catch (error) {
     dispatch({
       type: ORDER_INFO_FAIL,

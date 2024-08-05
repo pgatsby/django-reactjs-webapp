@@ -12,6 +12,7 @@ export const USER_INFO_FAIL = "USER_INFO_FAIL";
 export const USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST";
 export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
 export const USER_REGISTER_FAIL = "USER_REGISTER_FAIL";
+export const USER_REGISTER_RESET = "USER_REGISTER_RESET";
 
 export const USER_UPDATE_PROFILE_REQUEST = "USER_UPDATE_PROFILE_REQUEST";
 export const USER_UPDATE_PROFILE_SUCCESS = "USER_UPDATE_PROFILE_SUCCESS";
@@ -90,6 +91,12 @@ export const register =
       dispatch({
         type: USER_LOGIN_SUCCESS,
         payload: data,
+      });
+
+      localStorage.setItem("userLogin", JSON.stringify(data));
+
+      dispatch({
+        type: USER_REGISTER_RESET,
       });
 
       dispatch(getUserInfo());

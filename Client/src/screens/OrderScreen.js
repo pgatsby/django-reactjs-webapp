@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import CustomPayPalButtons from "../components/CustomPayPalButtons.js";
 import Message from "../components/Message.js";
 import Loader from "../components/Loader.js";
-import { getOrderInfo } from "../actions/orderActions.js";
+import { getOrderInfo, ORDER_PAY_RESET } from "../actions/orderActions.js";
 
 function OrderScreen() {
   const dispatch = useDispatch();
@@ -17,6 +19,15 @@ function OrderScreen() {
 
   const { order, error, loading } = useSelector((state) => state.orderInfo);
 
+  const { success: successPay, loading: loadingPay } = useSelector(
+    (state) => state.orderPay
+  );
+
+  const initialOptions = {
+    clientId:
+      "AZ_wTSAI4xEb8gcdzkff7m7h4wolUKXTTkQA65qGe54FcYhEBumF9g55Czjt1RGW7AnUa8vSmYwgs_Bz",
+  };
+
   let itemsPrice = null;
 
   if (!loading && !error) {
@@ -28,10 +39,11 @@ function OrderScreen() {
     if (!access) {
       navigate("/");
     }
-    if (!order || order.id !== Number(orderId)) {
+    if (!order || order.id !== Number(orderId) || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(getOrderInfo(orderId));
     }
-  }, [access, order, orderId, dispatch, navigate]);
+  }, [access, order, orderId, successPay, dispatch, navigate]);
 
   return loading ? (
     <Loader />
@@ -141,6 +153,19 @@ function OrderScreen() {
                   <Col>Total: </Col>
                   <Col> ${order.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {!order.isPaid ? (
+                  <ListGroup.Item>
+                    {loadingPay && <Loader />}
+                    <PayPalScriptProvider options={initialOptions}>
+                      <CustomPayPalButtons
+                        amount={order.totalPrice}
+                        orderId={order.id}
+                      />
+                    </PayPalScriptProvider>
+                  </ListGroup.Item>
+                ) : null}
               </ListGroup.Item>
             </ListGroup>
           </Card>

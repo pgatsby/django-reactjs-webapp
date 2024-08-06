@@ -7,12 +7,17 @@ import {
   ORDER_INFO_REQUEST,
   ORDER_INFO_SUCCESS,
   ORDER_INFO_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_RESET,
 } from "../actions/orderActions";
 
 export const orderCreateReducer = createReducer({}, (builder) => {
   builder
     .addCase(ORDER_CREATE_REQUEST, (state) => {
       state.loading = true;
+      state.error = null;
     })
     .addCase(ORDER_CREATE_SUCCESS, (state, action) => {
       state.loading = false;
@@ -37,6 +42,7 @@ export const orderInfoReducer = createReducer(
     builder
       .addCase(ORDER_INFO_REQUEST, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(ORDER_INFO_SUCCESS, (state, action) => {
         state.loading = false;
@@ -49,3 +55,24 @@ export const orderInfoReducer = createReducer(
       });
   }
 );
+
+export const orderPayReducer = createReducer({}, (builder) => {
+  builder
+    .addCase(ORDER_PAY_REQUEST, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = null;
+    })
+    .addCase(ORDER_PAY_SUCCESS, (state, action) => {
+      state.loading = false;
+      state.success = true;
+    })
+    .addCase(ORDER_PAY_FAIL, (state, action) => {
+      state.loading = false;
+      state.success = false;
+      state.error = action.payload;
+    })
+    .addCase(ORDER_PAY_RESET, () => {
+      return {};
+    });
+});

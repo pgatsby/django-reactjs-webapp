@@ -12,12 +12,13 @@ export const productListReducer = createReducer(
   {
     products: [],
     loading: false,
-    error: "",
+    error: null,
   },
   (builder) => {
     builder
       .addCase(GET_PRODUCTS_REQUEST, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(GET_PRODUCTS_SUCCESS, (state, action) => {
         state.loading = false;
@@ -34,12 +35,13 @@ export const productDetailsReducer = createReducer(
   {
     product: [],
     loading: false,
-    error: "",
+    error: null,
   },
   (builder) => {
     builder
       .addCase(GET_PRODUCT_BY_ID_REQUEST, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(GET_PRODUCT_BY_ID_SUCCESS, (state, action) => {
         state.loading = false;

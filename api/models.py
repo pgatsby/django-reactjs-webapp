@@ -53,7 +53,7 @@ class Order(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.createdAt)
+        return str(f"Order ID: {self.id}")
 
 
 class OrderItem(models.Model):
@@ -80,4 +80,4 @@ class ShippingAddress(models.Model):
     country = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
-        return str(self.address)
+        return str(f"{self.address} {self.city} {self.country} {self.postalCode}")

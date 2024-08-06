@@ -13,6 +13,7 @@ import {
 import {
   orderCreateReducer,
   orderInfoReducer,
+  orderPayReducer,
 } from "./reducers/orderReducer.js";
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
   orderInfo: orderInfoReducer,
+  orderPay: orderPayReducer,
 });
 
 const store = configureStore({

@@ -33,6 +33,7 @@ export const userLoginReducer = createReducer(
     builder
       .addCase(USER_LOGIN_REQUEST, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(USER_LOGIN_SUCCESS, (state, action) => {
         return {
@@ -57,6 +58,7 @@ export const userInfoReducer = createReducer(
     builder
       .addCase(USER_INFO_REQUEST, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(USER_INFO_SUCCESS, (state, action) => {
         state.loading = false;
@@ -76,6 +78,8 @@ export const userRegisterReducer = createReducer({}, (builder) => {
   builder
     .addCase(USER_REGISTER_REQUEST, (state) => {
       state.loading = true;
+      state.access = false;
+      state.error = null;
     })
     .addCase(USER_REGISTER_SUCCESS, (state, action) => {
       state.loading = false;
@@ -94,6 +98,8 @@ export const userUpdateProfileReducer = createReducer({}, (builder) => {
   builder
     .addCase(USER_UPDATE_PROFILE_REQUEST, (state) => {
       state.loading = true;
+      state.success = false;
+      state.error = null;
     })
     .addCase(USER_UPDATE_PROFILE_SUCCESS, (state, action) => {
       state.loading = false;

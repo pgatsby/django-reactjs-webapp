@@ -6,7 +6,8 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import CustomPayPalButtons from "../components/CustomPayPalButtons.js";
 import Message from "../components/Message.js";
 import Loader from "../components/Loader.js";
-import { getOrderInfo, ORDER_PAY_RESET } from "../actions/orderActions.js";
+import { fetchOrderInfo } from "../actions/orderActions.js";
+import { ORDER_PAY_RESET } from "../constants/orderConstants.js";
 
 function OrderScreen() {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ function OrderScreen() {
 
   const { order, error, loading } = useSelector((state) => state.orderInfo);
 
-  const { success: successPay, loading: loadingPay } = useSelector(
+  const { fullfilled: fullfilledPay, loading: loadingPay } = useSelector(
     (state) => state.orderPay
   );
 
@@ -39,11 +40,11 @@ function OrderScreen() {
     if (!access) {
       navigate("/");
     }
-    if (!order || order.id !== Number(orderId) || successPay) {
+    if (!order || order.id !== Number(orderId) || fullfilledPay) {
       dispatch({ type: ORDER_PAY_RESET });
-      dispatch(getOrderInfo(orderId));
+      dispatch(fetchOrderInfo(orderId));
     }
-  }, [access, order, orderId, successPay, dispatch, navigate]);
+  }, [access, order, orderId, fullfilledPay, dispatch, navigate]);
 
   return loading ? (
     <Loader />

@@ -6,14 +6,19 @@ import {
 import { cartReducer } from "./reducers/cartReducers.js";
 import {
   userLoginReducer,
-  userInfoReducer,
+  userProfileReducer,
   userRegisterReducer,
-  userUpdateProfileReducer,
+  userUpdateReducer,
+  userListReducer,
+  userDeleteReducer,
+  adminEditUserReducer,
+  adminUpdateUserReducer,
 } from "./reducers/userReducers.js";
 import {
   orderCreateReducer,
   orderInfoReducer,
   orderPayReducer,
+  userOrdersReducer,
 } from "./reducers/orderReducer.js";
 
 const rootReducer = combineReducers({
@@ -21,9 +26,14 @@ const rootReducer = combineReducers({
   productDetails: productDetailsReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
-  userInfo: userInfoReducer,
+  userProfile: userProfileReducer,
   userRegister: userRegisterReducer,
-  userUpdateProfile: userUpdateProfileReducer,
+  userUpdate: userUpdateReducer,
+  userOrders: userOrdersReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  adminEdit: adminEditUserReducer,
+  adminUpdate: adminUpdateUserReducer,
   orderCreate: orderCreateReducer,
   orderInfo: orderInfoReducer,
   orderPay: orderPayReducer,

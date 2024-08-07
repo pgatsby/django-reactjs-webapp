@@ -1,12 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  GET_PRODUCTS_REQUEST,
-  GET_PRODUCTS_SUCCESS,
-  GET_PRODUCTS_FAIL,
-  GET_PRODUCT_BY_ID_REQUEST,
-  GET_PRODUCT_BY_ID_SUCCESS,
-  GET_PRODUCT_BY_ID_FAIL,
-} from "../actions/productActions";
+  GET_PRODUCTS_PENDING,
+  GET_PRODUCTS_FULLFILLED,
+  GET_PRODUCTS_REJECTED,
+  GET_PRODUCT_BY_ID_PENDING,
+  GET_PRODUCT_BY_ID_FULLFILLED,
+  GET_PRODUCT_BY_ID_REJECTED,
+} from "../constants/productConstants.js";
 
 export const productListReducer = createReducer(
   {
@@ -16,15 +16,15 @@ export const productListReducer = createReducer(
   },
   (builder) => {
     builder
-      .addCase(GET_PRODUCTS_REQUEST, (state) => {
+      .addCase(GET_PRODUCTS_PENDING, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(GET_PRODUCTS_SUCCESS, (state, action) => {
+      .addCase(GET_PRODUCTS_FULLFILLED, (state, action) => {
         state.loading = false;
         state.products = action.payload;
       })
-      .addCase(GET_PRODUCTS_FAIL, (state, action) => {
+      .addCase(GET_PRODUCTS_REJECTED, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
@@ -39,15 +39,15 @@ export const productDetailsReducer = createReducer(
   },
   (builder) => {
     builder
-      .addCase(GET_PRODUCT_BY_ID_REQUEST, (state) => {
+      .addCase(GET_PRODUCT_BY_ID_PENDING, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(GET_PRODUCT_BY_ID_SUCCESS, (state, action) => {
+      .addCase(GET_PRODUCT_BY_ID_FULLFILLED, (state, action) => {
         state.loading = false;
         state.product = action.payload;
       })
-      .addCase(GET_PRODUCT_BY_ID_FAIL, (state, action) => {
+      .addCase(GET_PRODUCT_BY_ID_REJECTED, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -1,28 +1,42 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  USER_LOGIN_REQUEST,
-  USER_LOGIN_SUCCESS,
-  USER_LOGIN_FAIL,
+  USER_LOGIN_PENDING,
+  USER_LOGIN_FULLFILLED,
+  USER_LOGIN_REJECTED,
   USER_LOGOUT,
-  USER_INFO_REQUEST,
-  USER_INFO_SUCCESS,
-  USER_INFO_FAIL,
-  USER_REGISTER_REQUEST,
-  USER_REGISTER_SUCCESS,
-  USER_REGISTER_FAIL,
-  USER_UPDATE_PROFILE_REQUEST,
-  USER_UPDATE_PROFILE_SUCCESS,
-  USER_UPDATE_PROFILE_FAIL,
-  USER_UPDATE_PROFILE_RESET,
+  FETCH_USER_PENDING,
+  FETCH_USER_FULLFILLED,
+  FETCH_USER_REJECTED,
+  USER_REGISTER_PENDING,
+  USER_REGISTER_FULLFILLED,
+  USER_REGISTER_REJECTED,
+  USER_UPDATE_PENDING,
+  USER_UPDATE_FULLFILLED,
+  USER_UPDATE_REJECTED,
+  USER_UPDATE_RESET,
   USER_REGISTER_RESET,
-} from "../actions/userActions";
+  FETCH_USERS_PENDING,
+  FETCH_USERS_FULLFILLED,
+  FETCH_USERS_REJECTED,
+  DELETE_USER_PENDING,
+  DELETE_USER_FULLFILLED,
+  DELETE_USER_REJECTED,
+  DELETE_USER_RESET,
+  ADMIN_FETCH_USER_PENDING,
+  ADMIN_FETCH_USER_FULLFILLED,
+  ADMIN_FETCH_USER_REJECTED,
+  ADMIN_UPDATE_USER_PENDING,
+  ADMIN_UPDATE_USER_FULLFILLED,
+  ADMIN_UPDATE_USER_REJECTED,
+  ADMIN_UPDATE_USER_RESET,
+} from "../constants/userConstants.js";
 
 const userLoginFromLocalStorage = localStorage.getItem("userLogin")
   ? JSON.parse(localStorage.getItem("userLogin"))
   : null;
 
-const userInfoFromLocalStorage = localStorage.getItem("userInfo")
-  ? JSON.parse(localStorage.getItem("userInfo"))
+const userProfileFromLocalStorage = localStorage.getItem("userProfile")
+  ? JSON.parse(localStorage.getItem("userProfile"))
   : null;
 
 export const userLoginReducer = createReducer(
@@ -31,16 +45,16 @@ export const userLoginReducer = createReducer(
   },
   (builder) => {
     builder
-      .addCase(USER_LOGIN_REQUEST, (state) => {
+      .addCase(USER_LOGIN_PENDING, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(USER_LOGIN_SUCCESS, (state, action) => {
+      .addCase(USER_LOGIN_FULLFILLED, (state, action) => {
         return {
           ...action.payload,
         };
       })
-      .addCase(USER_LOGIN_FAIL, (state, action) => {
+      .addCase(USER_LOGIN_REJECTED, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -50,21 +64,21 @@ export const userLoginReducer = createReducer(
   }
 );
 
-export const userInfoReducer = createReducer(
+export const userProfileReducer = createReducer(
   {
-    user: userInfoFromLocalStorage ? userInfoFromLocalStorage : null,
+    user: userProfileFromLocalStorage,
   },
   (builder) => {
     builder
-      .addCase(USER_INFO_REQUEST, (state) => {
+      .addCase(FETCH_USER_PENDING, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(USER_INFO_SUCCESS, (state, action) => {
+      .addCase(FETCH_USER_FULLFILLED, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
-      .addCase(USER_INFO_FAIL, (state, action) => {
+      .addCase(FETCH_USER_REJECTED, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -76,16 +90,16 @@ export const userInfoReducer = createReducer(
 
 export const userRegisterReducer = createReducer({}, (builder) => {
   builder
-    .addCase(USER_REGISTER_REQUEST, (state) => {
+    .addCase(USER_REGISTER_PENDING, (state) => {
       state.loading = true;
-      state.access = false;
+      state.fullfilled = false;
       state.error = null;
     })
-    .addCase(USER_REGISTER_SUCCESS, (state, action) => {
+    .addCase(USER_REGISTER_FULLFILLED, (state, action) => {
       state.loading = false;
-      state.access = true;
+      state.fullfilled = true;
     })
-    .addCase(USER_REGISTER_FAIL, (state, action) => {
+    .addCase(USER_REGISTER_REJECTED, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     })
@@ -94,22 +108,107 @@ export const userRegisterReducer = createReducer({}, (builder) => {
     });
 });
 
-export const userUpdateProfileReducer = createReducer({}, (builder) => {
+export const userUpdateReducer = createReducer({}, (builder) => {
   builder
-    .addCase(USER_UPDATE_PROFILE_REQUEST, (state) => {
+    .addCase(USER_UPDATE_PENDING, (state) => {
       state.loading = true;
-      state.success = false;
+      state.fullfilled = false;
       state.error = null;
     })
-    .addCase(USER_UPDATE_PROFILE_SUCCESS, (state, action) => {
+    .addCase(USER_UPDATE_FULLFILLED, (state, action) => {
       state.loading = false;
-      state.success = true;
+      state.fullfilled = true;
     })
-    .addCase(USER_UPDATE_PROFILE_FAIL, (state, action) => {
+    .addCase(USER_UPDATE_REJECTED, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     })
-    .addCase(USER_UPDATE_PROFILE_RESET, () => {
+    .addCase(USER_UPDATE_RESET, () => {
+      return {};
+    });
+});
+
+export const userListReducer = createReducer(
+  {
+    users: [],
+  },
+  (builder) => {
+    builder
+      .addCase(FETCH_USERS_PENDING, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(FETCH_USERS_FULLFILLED, (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+      })
+      .addCase(FETCH_USERS_REJECTED, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(USER_LOGOUT, () => {
+        return { users: [] };
+      });
+  }
+);
+
+export const userDeleteReducer = createReducer({}, (builder) => {
+  builder
+    .addCase(DELETE_USER_PENDING, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(DELETE_USER_FULLFILLED, (state, action) => {
+      state.loading = false;
+      state.fullfilled = true;
+    })
+    .addCase(DELETE_USER_REJECTED, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(DELETE_USER_RESET, (state, action) => {
+      return {};
+    })
+    .addCase(USER_LOGOUT, () => {
+      return {};
+    });
+});
+
+export const adminEditUserReducer = createReducer({}, (builder) => {
+  builder
+    .addCase(ADMIN_FETCH_USER_PENDING, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(ADMIN_FETCH_USER_FULLFILLED, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    })
+    .addCase(ADMIN_FETCH_USER_REJECTED, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(USER_LOGOUT, () => {
+      return { user: null };
+    });
+});
+
+export const adminUpdateUserReducer = createReducer({}, (builder) => {
+  builder
+    .addCase(ADMIN_UPDATE_USER_PENDING, (state) => {
+      state.loading = true;
+      state.fullfilled = false;
+      state.error = null;
+    })
+    .addCase(ADMIN_UPDATE_USER_FULLFILLED, (state, action) => {
+      state.loading = false;
+      state.fullfilled = true;
+    })
+    .addCase(ADMIN_UPDATE_USER_REJECTED, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(ADMIN_UPDATE_USER_RESET, () => {
       return {};
     });
 });

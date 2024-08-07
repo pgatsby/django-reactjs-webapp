@@ -9,6 +9,8 @@ import { savePaymentMethod } from "../actions/cartActions.js";
 function PaymentScreen() {
   const cart = useSelector((state) => state.cart);
 
+  const { access } = useSelector((state) => state.userLogin);
+
   const { shippingAddress } = cart;
 
   const dispatch = useDispatch();
@@ -18,13 +20,16 @@ function PaymentScreen() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!access) {
+      navigate("/");
+    }
     if (!shippingAddress.address) {
       navigate("/shipping");
     }
     if (cart.paymentMethod) {
       setPaymentMethod(cart.paymentMethod);
     }
-  },[cart.paymentMethod, shippingAddress, navigate, dispatch]);
+  }, [access, cart.paymentMethod, shippingAddress, navigate, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();

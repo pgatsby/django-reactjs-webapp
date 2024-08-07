@@ -1,14 +1,6 @@
 import axios from "axios";
 
-export const CART_ADD_ITEM = "CART_ADD_ITEM";
-
-export const CART_REMOVE_ITEM = "CART_REMOVE_ITEM";
-
-export const CART_CLEAR_ITEMS = "CART_CLEAR_ITEMS";
-
-export const CART_SAVE_SHIPPING_ADDRESS = "CART_SAVE_SHIPPING_ADDRESS";
-
-export const CART_SAVE_PAYMENT_METHOD = "CART_SAVE_PAYMENT_METHOD";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS, CART_SAVE_PAYMENT_METHOD } from "../constants/cartConstants.js";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/products/${id}`);

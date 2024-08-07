@@ -1,28 +1,28 @@
 import axios from "axios";
-
-export const GET_PRODUCTS_REQUEST = "GET_PRODUCTS_REQUEST";
-export const GET_PRODUCTS_SUCCESS = "GET_PRODUCTS_SUCCESS";
-export const GET_PRODUCTS_FAIL = "GET_PRODUCTS_FAIL";
-
-export const GET_PRODUCT_BY_ID_REQUEST = "GET_PRODUCT_BY_ID_REQUEST";
-export const GET_PRODUCT_BY_ID_SUCCESS = "GET_PRODUCT_BY_ID_SUCCESS";
-export const GET_PRODUCT_BY_ID_FAIL = "GET_PRODUCT_BY_ID_FAIL";
+import {
+  GET_PRODUCTS_PENDING,
+  GET_PRODUCTS_FULLFILLED,
+  GET_PRODUCTS_REJECTED,
+  GET_PRODUCT_BY_ID_PENDING,
+  GET_PRODUCT_BY_ID_FULLFILLED,
+  GET_PRODUCT_BY_ID_REJECTED,
+} from "../constants/productConstants";
 
 export const fetchProducts = () => async (dispatch) => {
   try {
     dispatch({
-      type: GET_PRODUCTS_REQUEST,
+      type: GET_PRODUCTS_PENDING,
     });
 
     const { data } = await axios.get(`/api/products/`);
 
     dispatch({
-      type: GET_PRODUCTS_SUCCESS,
+      type: GET_PRODUCTS_FULLFILLED,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: GET_PRODUCTS_FAIL,
+      type: GET_PRODUCTS_REJECTED,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
@@ -34,18 +34,18 @@ export const fetchProducts = () => async (dispatch) => {
 export const fetchProductById = (id) => async (dispatch) => {
   try {
     dispatch({
-      type: GET_PRODUCT_BY_ID_REQUEST,
+      type: GET_PRODUCT_BY_ID_PENDING,
     });
 
     const { data } = await axios.get(`/api/products/${id}`);
 
     dispatch({
-      type: GET_PRODUCT_BY_ID_SUCCESS,
+      type: GET_PRODUCT_BY_ID_FULLFILLED,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: GET_PRODUCT_BY_ID_FAIL,
+      type: GET_PRODUCT_BY_ID_REJECTED,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

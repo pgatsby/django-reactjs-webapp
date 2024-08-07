@@ -1,28 +1,37 @@
 import axios from "axios";
 
-export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST";
-export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
-export const USER_LOGIN_FAIL = "USER_LOGIN_FAIL";
-export const USER_LOGOUT = "USER_LOGOUT";
-
-export const USER_INFO_REQUEST = "USER_INFO_REQUEST";
-export const USER_INFO_SUCCESS = "USER_INFO_SUCCESS";
-export const USER_INFO_FAIL = "USER_INFO_FAIL";
-
-export const USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST";
-export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
-export const USER_REGISTER_FAIL = "USER_REGISTER_FAIL";
-export const USER_REGISTER_RESET = "USER_REGISTER_RESET";
-
-export const USER_UPDATE_PROFILE_REQUEST = "USER_UPDATE_PROFILE_REQUEST";
-export const USER_UPDATE_PROFILE_SUCCESS = "USER_UPDATE_PROFILE_SUCCESS";
-export const USER_UPDATE_PROFILE_RESET = "USER_UPDATE_PROFILE_RESET";
-export const USER_UPDATE_PROFILE_FAIL = "USER_UPDATE_PROFILE_FAIL";
+import {
+  USER_LOGIN_PENDING,
+  USER_LOGIN_FULLFILLED,
+  USER_LOGIN_REJECTED,
+  USER_LOGOUT,
+  FETCH_USER_PENDING,
+  FETCH_USER_FULLFILLED,
+  FETCH_USER_REJECTED,
+  USER_REGISTER_PENDING,
+  USER_REGISTER_FULLFILLED,
+  USER_REGISTER_REJECTED,
+  USER_UPDATE_PENDING,
+  USER_UPDATE_FULLFILLED,
+  USER_UPDATE_REJECTED,
+  FETCH_USERS_PENDING,
+  FETCH_USERS_FULLFILLED,
+  FETCH_USERS_REJECTED,
+  DELETE_USER_PENDING,
+  DELETE_USER_FULLFILLED,
+  DELETE_USER_REJECTED,
+  ADMIN_FETCH_USER_PENDING,
+  ADMIN_FETCH_USER_FULLFILLED,
+  ADMIN_FETCH_USER_REJECTED,
+  ADMIN_UPDATE_USER_PENDING,
+  ADMIN_UPDATE_USER_FULLFILLED,
+  ADMIN_UPDATE_USER_REJECTED,
+} from "../constants/userConstants.js";
 
 export const login = (username, password) => async (dispatch) => {
   try {
     dispatch({
-      type: USER_LOGIN_REQUEST,
+      type: USER_LOGIN_PENDING,
     });
 
     const config = {
@@ -41,16 +50,14 @@ export const login = (username, password) => async (dispatch) => {
     );
 
     dispatch({
-      type: USER_LOGIN_SUCCESS,
+      type: USER_LOGIN_FULLFILLED,
       payload: data,
     });
 
     localStorage.setItem("userLogin", JSON.stringify(data));
-
-    dispatch(getUserInfo());
   } catch (error) {
     dispatch({
-      type: USER_LOGIN_FAIL,
+      type: USER_LOGIN_REJECTED,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
@@ -63,7 +70,7 @@ export const register =
   (username, email, password, first_name, last_name) => async (dispatch) => {
     try {
       dispatch({
-        type: USER_REGISTER_REQUEST,
+        type: USER_REGISTER_PENDING,
       });
 
       const config = {
@@ -85,24 +92,18 @@ export const register =
       );
 
       dispatch({
-        type: USER_REGISTER_SUCCESS,
+        type: USER_REGISTER_FULLFILLED,
       });
 
       dispatch({
-        type: USER_LOGIN_SUCCESS,
+        type: USER_LOGIN_FULLFILLED,
         payload: data,
       });
 
       localStorage.setItem("userLogin", JSON.stringify(data));
-
-      dispatch({
-        type: USER_REGISTER_RESET,
-      });
-
-      dispatch(getUserInfo());
     } catch (error) {
       dispatch({
-        type: USER_REGISTER_FAIL,
+        type: USER_REGISTER_REJECTED,
         payload:
           error.response && error.response.data.detail
             ? error.response.data.detail
@@ -116,7 +117,7 @@ export const updateUserProfile =
   async (dispatch, getState) => {
     try {
       dispatch({
-        type: USER_UPDATE_PROFILE_REQUEST,
+        type: USER_UPDATE_PENDING,
       });
 
       const { access } = getState().userLogin;
@@ -141,14 +142,12 @@ export const updateUserProfile =
       );
 
       dispatch({
-        type: USER_UPDATE_PROFILE_SUCCESS,
+        type: USER_UPDATE_FULLFILLED,
         payload: data,
       });
-
-      dispatch(getUserInfo());
     } catch (error) {
       dispatch({
-        type: USER_UPDATE_PROFILE_FAIL,
+        type: USER_UPDATE_REJECTED,
         payload:
           error.response && error.response.data.detail
             ? error.response.data.detail
@@ -157,10 +156,10 @@ export const updateUserProfile =
     }
   };
 
-export const getUserInfo = () => async (dispatch, getState) => {
+export const fetchUserProfile = () => async (dispatch, getState) => {
   try {
     dispatch({
-      type: USER_INFO_REQUEST,
+      type: FETCH_USER_PENDING,
     });
 
     const { access } = getState().userLogin;
@@ -172,17 +171,17 @@ export const getUserInfo = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get("/api/users/profile/", config);
+    const { data } = await axios.get(`/api/users/profile/`, config);
 
     dispatch({
-      type: USER_INFO_SUCCESS,
+      type: FETCH_USER_FULLFILLED,
       payload: data,
     });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem("userProfile", JSON.stringify(data));
   } catch (error) {
     dispatch({
-      type: USER_INFO_FAIL,
+      type: FETCH_USER_REJECTED,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
@@ -193,9 +192,149 @@ export const getUserInfo = () => async (dispatch, getState) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userLogin");
-  localStorage.removeItem("userInfo");
+  localStorage.removeItem("userProfile");
 
   dispatch({
     type: USER_LOGOUT,
   });
 };
+
+export const fetchUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: FETCH_USERS_PENDING,
+    });
+
+    const { access } = getState().userLogin;
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+    };
+
+    const { data } = await axios.get("/api/users/", config);
+
+    dispatch({
+      type: FETCH_USERS_FULLFILLED,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_USERS_REJECTED,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: DELETE_USER_PENDING,
+    });
+
+    const { access } = getState().userLogin;
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+    };
+
+    const { data } = await axios.delete(`/api/users/delete/${id}/`, config);
+
+    dispatch({
+      type: DELETE_USER_FULLFILLED,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_USER_REJECTED,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const adminFetchUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ADMIN_FETCH_USER_PENDING,
+    });
+
+    const { access } = getState().userLogin;
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/${id}/`, config);
+
+    dispatch({
+      type: ADMIN_FETCH_USER_FULLFILLED,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_FETCH_USER_REJECTED,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const adminUpdateUser =
+  (id, username, email, first_name, last_name, isStaff) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ADMIN_UPDATE_USER_PENDING,
+      });
+
+      const { access } = getState().userLogin;
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${access}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/users/update/${id}/`,
+        {
+          username: username,
+          email: email,
+          first_name: first_name,
+          last_name: last_name,
+          is_staff: isStaff,
+        },
+        config
+      );
+
+      dispatch({
+        type: ADMIN_UPDATE_USER_FULLFILLED,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ADMIN_UPDATE_USER_REJECTED,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };

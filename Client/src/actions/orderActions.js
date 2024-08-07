@@ -1,24 +1,24 @@
 import axios from "axios";
-import { CART_CLEAR_ITEMS } from "./cartActions";
-
-export const ORDER_CREATE_REQUEST = "ORDER_CREATE_REQUEST";
-export const ORDER_CREATE_SUCCESS = "ORDER_CREATE_SUCCESS";
-export const ORDER_CREATE_FAIL = "ORDER_CREATE_FAIL";
-export const ORDER_CREATE_RESET = "ORDER_CREATE_RESET";
-
-export const ORDER_INFO_REQUEST = "ORDER_INFO_REQUEST";
-export const ORDER_INFO_SUCCESS = "ORDER_INFO_SUCCESS";
-export const ORDER_INFO_FAIL = "ORDER_INFO_FAIL";
-
-export const ORDER_PAY_REQUEST = "ORDER_PAY_REQUEST";
-export const ORDER_PAY_SUCCESS = "ORDER_PAY_SUCCESS";
-export const ORDER_PAY_FAIL = "ORDER_PAY_FAIL";
-export const ORDER_PAY_RESET = "ORDER_PAY_RESET";
+import { CART_CLEAR_ITEMS } from "../constants/cartConstants.js";
+import {
+  ORDER_CREATE_PENDING,
+  ORDER_CREATE_FULLFILLED,
+  ORDER_CREATE_REJECTED,
+  ORDER_INFO_PENDING,
+  ORDER_INFO_FULLFILLED,
+  ORDER_INFO_REJECTED,
+  ORDER_PAY_PENDING,
+  ORDER_PAY_FULLFILLED,
+  ORDER_PAY_REJECTED,
+  FETCH_USER_ORDERS_PENDING,
+  FETCH_USER_ORDERS_FULLFILLED,
+  FETCH_USER_ORDERS_REJECTED,
+} from "../constants/orderConstants.js";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: ORDER_CREATE_REQUEST,
+      type: ORDER_CREATE_PENDING,
     });
 
     const { access } = getState().userLogin;
@@ -33,7 +33,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     const { data } = await axios.post("/api/orders/create/", order, config);
 
     dispatch({
-      type: ORDER_CREATE_SUCCESS,
+      type: ORDER_CREATE_FULLFILLED,
       payload: data,
     });
 
@@ -44,7 +44,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     localStorage.removeItem("cartItems");
   } catch (error) {
     dispatch({
-      type: ORDER_CREATE_FAIL,
+      type: ORDER_CREATE_REJECTED,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
@@ -53,10 +53,10 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-export const getOrderInfo = (id) => async (dispatch, getState) => {
+export const fetchOrderInfo = (id) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: ORDER_INFO_REQUEST,
+      type: ORDER_INFO_PENDING,
     });
 
     const { access } = getState().userLogin;
@@ -71,12 +71,12 @@ export const getOrderInfo = (id) => async (dispatch, getState) => {
     const { data } = await axios.get(`/api/orders/${id}/`, config);
 
     dispatch({
-      type: ORDER_INFO_SUCCESS,
+      type: ORDER_INFO_FULLFILLED,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: ORDER_INFO_FAIL,
+      type: ORDER_INFO_REJECTED,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
@@ -88,7 +88,7 @@ export const getOrderInfo = (id) => async (dispatch, getState) => {
 export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: ORDER_PAY_REQUEST,
+      type: ORDER_PAY_PENDING,
     });
 
     const { access } = getState().userLogin;
@@ -107,12 +107,44 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
     );
 
     dispatch({
-      type: ORDER_PAY_SUCCESS,
+      type: ORDER_PAY_FULLFILLED,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: ORDER_PAY_FAIL,
+      type: ORDER_PAY_REJECTED,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const fetchUserOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: FETCH_USER_ORDERS_PENDING,
+    });
+
+    const { access } = getState().userLogin;
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+    };
+
+    const { data } = await axios.get("/api/orders/myorders/", config);
+
+    dispatch({
+      type: FETCH_USER_ORDERS_FULLFILLED,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_USER_ORDERS_REJECTED,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

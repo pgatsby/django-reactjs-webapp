@@ -4,7 +4,8 @@ import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message.js";
 import CheckoutSteps from "../components/CheckoutSteps.js";
-import { createOrder, ORDER_CREATE_RESET } from "../actions/orderActions.js";
+import { createOrder } from "../actions/orderActions.js";
+import { ORDER_CREATE_RESET } from "../constants/orderConstants.js";
 
 function PlaceOrderScreen() {
   const dispatch = useDispatch();
@@ -26,13 +27,15 @@ function PlaceOrderScreen() {
     Number(taxPrice)
   ).toFixed(2);
 
-  const { order, error, success } = useSelector((state) => state.orderCreate);
+  const { order, error, fullfilled } = useSelector(
+    (state) => state.orderCreate
+  );
 
   useEffect(() => {
     if (!access) {
       navigate("/login?redirect=placeorder");
     }
-    if (success) {
+    if (fullfilled) {
       navigate(`/order/${order.id}`);
       dispatch({
         type: ORDER_CREATE_RESET,

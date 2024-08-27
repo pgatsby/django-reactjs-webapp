@@ -1,8 +1,11 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser
-from rest_framework.response import Response
+from django.db.models import Avg
 
-from api.models import Product
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+
+from api.models import Product, Review
 from api.serializers import ProductSerializer
 
 
@@ -78,3 +81,35 @@ def uploadImage(request, pk):
     product.save()
 
     return Response({'detail': f'Product[{pk}] image uploaded.'})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createProductReview(request, pk):
+    user = request.user
+    product = Product.objects.get(id=pk)
+
+    data = request.data
+
+    exists = product.review_set.filter(user=user).exists()
+    if exists:
+        return Response({'detail': f'Product already reviewed'}, status=status.HTTP_400_BAD_REQUEST)
+    elif data['rating'] == 0:
+        return Response({'detail': f'Please select a rating'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        Review.objects.create(
+            user=user,
+            product=product,
+            username=user.username,
+            rating=data['rating'],
+            comment=data['comment']
+
+        )
+
+        product.numReviews = product.review_set.count()
+        product.rating = product.review_set.aggregate(
+            average=Avg('rating'))['average'] or 0
+
+        product.save()
+
+        return Response({'detail': f'Product[{pk}] review created'})

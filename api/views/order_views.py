@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from api.models import Product, Order, OrderItem, ShippingAddress
-from api.serializers import ProductSerializer, OrderSerializer
+from api.serializers import OrderSerializer
 
 from rest_framework import status
 from datetime import datetime as dt

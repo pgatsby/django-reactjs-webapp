@@ -15,6 +15,9 @@ import {
   UPDATE_PRODUCT_PENDING,
   UPDATE_PRODUCT_FULLFILLED,
   UPDATE_PRODUCT_REJECTED,
+  CREATE_PRODUCT_REVIEW_PENDING,
+  CREATE_PRODUCT_REVIEW_FULLFILLED,
+  CREATE_PRODUCT_REVIEW_REJECTED,
 } from "../constants/productConstants";
 
 export const fetchProducts = () => async (dispatch) => {
@@ -162,3 +165,40 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     });
   }
 };
+
+export const createProductReview =
+  (productId, review) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: CREATE_PRODUCT_REVIEW_PENDING,
+      });
+
+      const { access } = getState().userLogin;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        `/api/products/${productId}/reviews/`,
+        review,
+        config
+      );
+
+      dispatch({
+        type: CREATE_PRODUCT_REVIEW_FULLFILLED,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CREATE_PRODUCT_REVIEW_REJECTED,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };

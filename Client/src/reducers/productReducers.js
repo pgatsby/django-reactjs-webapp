@@ -18,6 +18,10 @@ import {
   UPDATE_PRODUCT_FULLFILLED,
   UPDATE_PRODUCT_REJECTED,
   UPDATE_PRODUCT_RESET,
+  CREATE_PRODUCT_REVIEW_PENDING,
+  CREATE_PRODUCT_REVIEW_FULLFILLED,
+  CREATE_PRODUCT_REVIEW_REJECTED,
+  CREATE_PRODUCT_REVIEW_RESET,
 } from "../constants/productConstants.js";
 
 export const productListReducer = createReducer(
@@ -45,7 +49,9 @@ export const productListReducer = createReducer(
 
 export const productDetailsReducer = createReducer(
   {
-    product: [],
+    product: {
+      reviews: [],
+    },
     loading: false,
     error: null,
   },
@@ -123,6 +129,26 @@ export const productUpdateReducer = createReducer({}, (builder) => {
       state.error = action.payload;
     })
     .addCase(UPDATE_PRODUCT_RESET, (state, action) => {
+      return {};
+    });
+});
+
+export const productCreateReviewReducer = createReducer({}, (builder) => {
+  builder
+    .addCase(CREATE_PRODUCT_REVIEW_PENDING, (state) => {
+      state.loading = true;
+      state.fullfilled = false;
+      state.error = null;
+    })
+    .addCase(CREATE_PRODUCT_REVIEW_FULLFILLED, (state, action) => {
+      state.loading = false;
+      state.fullfilled = true;
+    })
+    .addCase(CREATE_PRODUCT_REVIEW_REJECTED, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(CREATE_PRODUCT_REVIEW_RESET, (state, action) => {
       return {};
     });
 });

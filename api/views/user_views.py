@@ -118,7 +118,6 @@ def updateUserById(request, pk):
 @permission_classes([IsAdminUser])
 def deleteUser(request, pk):
     user = User.objects.get(id=pk)
-
     user.delete()
-
+    
     return Response({'detail': f'User[{pk}] was deleted.'})

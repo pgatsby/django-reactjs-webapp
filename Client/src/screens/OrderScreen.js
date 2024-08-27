@@ -1,13 +1,20 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import CustomPayPalButtons from "../components/CustomPayPalButtons.js";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import Message from "../components/Message.js";
 import Loader from "../components/Loader.js";
-import { fetchOrderInfo } from "../actions/orderActions.js";
-import { ORDER_PAY_RESET } from "../constants/orderConstants.js";
+import {
+  fetchOrderInfo,
+  payOrder,
+  deliverOrder,
+} from "../actions/orderActions.js";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from "../constants/orderConstants.js";
 
 function OrderScreen() {
   const dispatch = useDispatch();
@@ -18,11 +25,16 @@ function OrderScreen() {
 
   const { access } = useSelector((state) => state.userLogin);
 
+  const { user } = useSelector((state) => state.userProfile);
+
   const { order, error, loading } = useSelector((state) => state.orderInfo);
 
   const { fullfilled: fullfilledPay, loading: loadingPay } = useSelector(
     (state) => state.orderPay
   );
+
+  const { fullfilled: fullfilledDeliver, loading: loadingDeliver } =
+    useSelector((state) => state.orderDeliver);
 
   const initialOptions = {
     clientId:
@@ -36,15 +48,35 @@ function OrderScreen() {
       .reduce((acc, item) => acc + item.price * item.qty, 0)
       .toFixed(2);
   }
+
   useEffect(() => {
     if (!access) {
       navigate("/");
     }
-    if (!order || order.id !== Number(orderId) || fullfilledPay) {
+  }, [access, navigate]);
+
+  useEffect(() => {
+    if (fullfilledPay) {
       dispatch({ type: ORDER_PAY_RESET });
+    }
+  }, [fullfilledPay, dispatch]);
+
+  useEffect(() => {
+    if (fullfilledDeliver) {
+      dispatch({ type: ORDER_DELIVER_RESET });
+    }
+  }, [fullfilledDeliver, dispatch]);
+
+  useEffect(() => {
+    if (
+      !order ||
+      order.id !== Number(orderId) ||
+      fullfilledPay ||
+      fullfilledDeliver
+    ) {
       dispatch(fetchOrderInfo(orderId));
     }
-  }, [access, order, orderId, fullfilledPay, dispatch, navigate]);
+  }, [order, orderId, fullfilledPay, fullfilledDeliver, dispatch]);
 
   return loading ? (
     <Loader />
@@ -155,19 +187,54 @@ function OrderScreen() {
                   <Col> ${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                {!order.isPaid ? (
-                  <ListGroup.Item>
-                    {loadingPay && <Loader />}
-                    <PayPalScriptProvider options={initialOptions}>
-                      <CustomPayPalButtons
-                        amount={order.totalPrice}
-                        orderId={order.id}
-                      />
-                    </PayPalScriptProvider>
-                  </ListGroup.Item>
-                ) : null}
-              </ListGroup.Item>
+
+              {!order.isPaid ? (
+                <ListGroup.Item>
+                  {loadingPay && <Loader />}
+                  <PayPalScriptProvider options={initialOptions}>
+                    <PayPalButtons
+                      createOrder={(data, actions) =>
+                        actions.order.create({
+                          purchase_units: [
+                            {
+                              amount: {
+                                value: order.totalPrice,
+                              },
+                            },
+                          ],
+                          application_context: {
+                            shipping_preference: "NO_SHIPPING",
+                          },
+                        })
+                      }
+                      onApprove={async (data, actions) => {
+                        return actions.order.capture().then(function (details) {
+                          console.log(
+                            "Transaction completed by " +
+                              details.payer.name.given_name
+                          );
+                          dispatch(payOrder(order.id, details));
+                        });
+                      }}
+                    />
+                  </PayPalScriptProvider>
+                </ListGroup.Item>
+              ) : null}
+
+              {loadingDeliver && <Loader />}
+              {user && user.is_staff && order.isPaid && !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button
+                    type="button"
+                    className="btn w-100"
+                    onClick={() => {
+                      dispatch(deliverOrder(order.id));
+                    }}
+                  >
+                    Mark As Delivered
+                  </Button>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>

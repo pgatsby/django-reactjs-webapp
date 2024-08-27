@@ -47,7 +47,7 @@ function LoginScreen() {
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="username">
+        <Form.Group controlId="username" className="mb-3">
           <Form.Label>Email Address / Username</Form.Label>
           <Form.Control
             type="text"
@@ -58,7 +58,7 @@ function LoginScreen() {
             }}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId="password" className="mt-3">
+        <Form.Group controlId="password" className="mb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -69,7 +69,7 @@ function LoginScreen() {
             }}
           ></Form.Control>
         </Form.Group>
-        <Button className="mt-3" type="submit" variant="primary">
+        <Button className="mb-3" type="submit" variant="primary">
           Login
         </Button>
       </Form>

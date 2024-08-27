@@ -24,18 +24,22 @@ function UserListScreen() {
   );
 
   useEffect(() => {
-    if (!user || !user.is_staff) {
-      navigate("/");
-    } else {
+    if (user && user.is_staff) {
       dispatch(fetchUsers());
+    } else {
+      navigate("/");
     }
+  }, [user, navigate, dispatch]);
+
+  useEffect(() => {
     if (fullfilled) {
       setShow(false);
       dispatch({
         type: DELETE_USER_RESET,
       });
+      dispatch(fetchUsers());
     }
-  }, [user, fullfilled, navigate, dispatch]);
+  }, [fullfilled, dispatch]);
 
   const deleteUserHandler = (id) => {
     dispatch(deleteUser(id));
@@ -71,7 +75,7 @@ function UserListScreen() {
                   {user.is_staff ? (
                     <i className="fas fa-check" style={{ color: "green" }}></i>
                   ) : (
-                    <i className="fas fa-check" style={{ color: "red" }}></i>
+                    <i className="fas fa-times" style={{ color: "red" }}></i>
                   )}
                 </td>
                 <td>
@@ -116,9 +120,6 @@ function UserListScreen() {
             variant="primary"
             onClick={() => {
               setShow(false);
-              dispatch({
-                type: DELETE_USER_RESET,
-              });
             }}
           >
             Close

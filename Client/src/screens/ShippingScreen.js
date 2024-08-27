@@ -50,7 +50,7 @@ function ShippingScreen() {
       <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="address">
+        <Form.Group controlId="formAddress" className="mb-3">
           <Form.Label>Address</Form.Label>
           <Form.Control
             type="text"
@@ -63,7 +63,7 @@ function ShippingScreen() {
         </Form.Group>
         <Row>
           <Col>
-            <Form.Group controlId="city" className="mt-3">
+            <Form.Group controlId="formCity" className="mb-3">
               <Form.Label>City</Form.Label>
               <Form.Control
                 type="text"
@@ -76,7 +76,7 @@ function ShippingScreen() {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="state" className="mt-3">
+            <Form.Group controlId="formState" className="mb-3">
               <Form.Label>State</Form.Label>
               <Form.Control
                 type="text"
@@ -90,7 +90,7 @@ function ShippingScreen() {
           </Col>
 
           <Col>
-            <Form.Group controlId="country" className="mt-3">
+            <Form.Group controlId="formCountry" className="mb-3">
               <Form.Label>Country</Form.Label>
               <Form.Control
                 type="text"
@@ -103,7 +103,7 @@ function ShippingScreen() {
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group controlId="postalCode" className="mt-3">
+        <Form.Group controlId="formPostalCode" className="mb-3">
           <Form.Label>Postal Code</Form.Label>
           <Form.Control
             type="text"
@@ -115,7 +115,7 @@ function ShippingScreen() {
           ></Form.Control>
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="mt-3">
+        <Button variant="primary" type="submit" className="mb-3">
           Countinue
         </Button>
       </Form>

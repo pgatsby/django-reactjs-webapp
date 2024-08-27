@@ -31,7 +31,7 @@ function Header() {
               </LinkContainer>
 
               {user ? (
-                <NavDropdown title={user.username} id="username"> 
+                <NavDropdown title={user.username} id="username">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
@@ -52,7 +52,7 @@ function Header() {
                   <LinkContainer to="/admin/users">
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/admin/producs">
+                  <LinkContainer to="/admin/products">
                     <NavDropdown.Item>Products</NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to="/admin/orders">

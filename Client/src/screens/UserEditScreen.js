@@ -33,21 +33,28 @@ function UserEditScreen() {
     if (user && user.is_staff) {
       if (!userToEdit || userToEdit.id !== Number(userId)) {
         dispatch(adminFetchUser(userId));
-      } else {
-        if (!userToEdit || fullfilled) {
-          dispatch({ type: ADMIN_UPDATE_USER_RESET });
-          dispatch(adminFetchUser(userId));
-        } else {
-          setFirstname(userToEdit.first_name);
-          setLastname(userToEdit.last_name);
-          setUsername(userToEdit.username);
-          setEmail(userToEdit.email);
-        }
       }
     } else {
       navigate("/");
     }
-  }, [userId, user, userToEdit, fullfilled, dispatch, navigate]);
+  }, [userId, user, userToEdit, dispatch, navigate]);
+
+  useEffect(() => {
+    if (userToEdit && fullfilled) {
+      dispatch({ type: ADMIN_UPDATE_USER_RESET });
+      dispatch(adminFetchUser(userId));
+    }
+  }, [userToEdit, fullfilled, userId, dispatch]);
+
+  useEffect(() => {
+    if (userToEdit) {
+      setFirstname(userToEdit.first_name);
+      setLastname(userToEdit.last_name);
+      setUsername(userToEdit.username);
+      setEmail(userToEdit.email);
+      setIsStaff(userToEdit.is_staff);
+    }
+  }, [userToEdit]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -72,9 +79,9 @@ function UserEditScreen() {
       {loading && <Loader />}
       <FormContainer center xs={12} md={6}>
         <Form onSubmit={submitHandler}>
-          <Row>
+          <Row className="mb-3">
             <Col>
-              <Form.Group controlId="firstname">
+              <Form.Group controlId="formFirstName">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -87,7 +94,7 @@ function UserEditScreen() {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group controlId="lastname">
+              <Form.Group controlId="formLastName">
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -100,7 +107,8 @@ function UserEditScreen() {
               </Form.Group>
             </Col>
           </Row>
-          <Form.Group controlId="username" className="mt-3">
+
+          <Form.Group controlId="formUsername" className="mb-3">
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
@@ -111,7 +119,8 @@ function UserEditScreen() {
               }}
             ></Form.Control>
           </Form.Group>
-          <Form.Group controlId="email" className="mt-3">
+
+          <Form.Group controlId="formEmail" className="mb-3">
             <Form.Label>E-mail</Form.Label>
             <Form.Control
               type="email"
@@ -122,7 +131,8 @@ function UserEditScreen() {
               }}
             ></Form.Control>
           </Form.Group>
-          <Form.Group controlId="isstaff" className="mt-3">
+
+          <Form.Group controlId="formIsStaff" className="mb-3">
             <Form.Check
               type="checkbox"
               label="Is Staff"
@@ -133,7 +143,7 @@ function UserEditScreen() {
             ></Form.Check>
           </Form.Group>
 
-          <Button className="mt-3" type="submit" variant="primary">
+          <Button className="mb-3" type="submit" variant="primary">
             Update
           </Button>
         </Form>

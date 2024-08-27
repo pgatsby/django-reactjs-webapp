@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message.js";
 import CheckoutSteps from "../components/CheckoutSteps.js";
 import { createOrder } from "../actions/orderActions.js";
-import { ORDER_CREATE_RESET } from "../constants/orderConstants.js";
+import { CREATE_ORDER_RESET } from "../constants/orderConstants.js";
 
 function PlaceOrderScreen() {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ function PlaceOrderScreen() {
     if (fullfilled) {
       navigate(`/order/${order.id}`);
       dispatch({
-        type: ORDER_CREATE_RESET,
+        type: CREATE_ORDER_RESET,
       });
     }
   });

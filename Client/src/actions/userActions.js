@@ -8,12 +8,12 @@ import {
   FETCH_USER_PENDING,
   FETCH_USER_FULLFILLED,
   FETCH_USER_REJECTED,
-  USER_REGISTER_PENDING,
-  USER_REGISTER_FULLFILLED,
-  USER_REGISTER_REJECTED,
-  USER_UPDATE_PENDING,
-  USER_UPDATE_FULLFILLED,
-  USER_UPDATE_REJECTED,
+  REGISTER_USER_PENDING,
+  REGISTER_USER_FULLFILLED,
+  REGISTER_USER_REJECTED,
+  UPDATE_USER_PENDING,
+  UPDATE_USER_FULLFILLED,
+  UPDATE_USER_REJECTED,
   FETCH_USERS_PENDING,
   FETCH_USERS_FULLFILLED,
   FETCH_USERS_REJECTED,
@@ -36,7 +36,7 @@ export const login = (username, password) => async (dispatch) => {
 
     const config = {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
     };
 
@@ -70,12 +70,12 @@ export const register =
   (username, email, password, first_name, last_name) => async (dispatch) => {
     try {
       dispatch({
-        type: USER_REGISTER_PENDING,
+        type: REGISTER_USER_PENDING,
       });
 
       const config = {
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
       };
 
@@ -92,7 +92,7 @@ export const register =
       );
 
       dispatch({
-        type: USER_REGISTER_FULLFILLED,
+        type: REGISTER_USER_FULLFILLED,
       });
 
       dispatch({
@@ -103,7 +103,7 @@ export const register =
       localStorage.setItem("userLogin", JSON.stringify(data));
     } catch (error) {
       dispatch({
-        type: USER_REGISTER_REJECTED,
+        type: REGISTER_USER_REJECTED,
         payload:
           error.response && error.response.data.detail
             ? error.response.data.detail
@@ -117,14 +117,14 @@ export const updateUserProfile =
   async (dispatch, getState) => {
     try {
       dispatch({
-        type: USER_UPDATE_PENDING,
+        type: UPDATE_USER_PENDING,
       });
 
       const { access } = getState().userLogin;
 
       const config = {
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${access}`,
         },
       };
@@ -142,12 +142,12 @@ export const updateUserProfile =
       );
 
       dispatch({
-        type: USER_UPDATE_FULLFILLED,
+        type: UPDATE_USER_FULLFILLED,
         payload: data,
       });
     } catch (error) {
       dispatch({
-        type: USER_UPDATE_REJECTED,
+        type: UPDATE_USER_REJECTED,
         payload:
           error.response && error.response.data.detail
             ? error.response.data.detail
@@ -166,7 +166,7 @@ export const fetchUserProfile = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${access}`,
       },
     };
@@ -209,7 +209,7 @@ export const fetchUsers = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${access}`,
       },
     };
@@ -241,7 +241,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${access}`,
       },
     };
@@ -273,7 +273,7 @@ export const adminFetchUser = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${access}`,
       },
     };
@@ -296,7 +296,7 @@ export const adminFetchUser = (id) => async (dispatch, getState) => {
 };
 
 export const adminUpdateUser =
-  (id, username, email, first_name, last_name, isStaff) =>
+  (id, username, email, first_name, last_name, is_staff) =>
   async (dispatch, getState) => {
     try {
       dispatch({
@@ -307,7 +307,7 @@ export const adminUpdateUser =
 
       const config = {
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${access}`,
         },
       };
@@ -319,7 +319,7 @@ export const adminUpdateUser =
           email: email,
           first_name: first_name,
           last_name: last_name,
-          is_staff: isStaff,
+          is_staff: is_staff,
         },
         config
       );

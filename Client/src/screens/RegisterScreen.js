@@ -6,7 +6,7 @@ import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 import FormContainer from "../components/FormContainer.js";
 import { fetchUserProfile, register } from "../actions/userActions.js";
-import { USER_REGISTER_RESET } from "../constants/userConstants.js";
+import { REGISTER_USER_RESET } from "../constants/userConstants.js";
 
 function RegisterScreen() {
   const [firstname, setFirstname] = useState("");
@@ -14,7 +14,7 @@ function RegisterScreen() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
+  const [verifyPassword, setVerifyPassword] = useState("");
 
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ function RegisterScreen() {
   useEffect(() => {
     if (fullfilled) {
       dispatch({
-        type: USER_REGISTER_RESET,
+        type: REGISTER_USER_RESET,
       });
       dispatch(fetchUserProfile());
       navigate(`/${loc_redirect}`);
@@ -44,12 +44,12 @@ function RegisterScreen() {
     setUsername("");
     setEmail("");
     setPassword("");
-    setCheckPassword("");
+    setVerifyPassword("");
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password === checkPassword) {
+    if (password === verifyPassword) {
       dispatch(register(username, email, password, firstname, lastname));
       resetForm();
     }
@@ -61,9 +61,9 @@ function RegisterScreen() {
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
-        <Row>
+        <Row className="mb-3">
           <Col>
-            <Form.Group controlId="firstname">
+            <Form.Group controlId="formFirstName">
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
@@ -76,7 +76,7 @@ function RegisterScreen() {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="lastname">
+            <Form.Group controlId="formLastName">
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 type="text"
@@ -89,7 +89,7 @@ function RegisterScreen() {
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group controlId="username" className="mt-3">
+        <Form.Group controlId="formUsername" className="mt-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
@@ -100,7 +100,7 @@ function RegisterScreen() {
             }}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId="email" className="mt-3">
+        <Form.Group controlId="formEmail" className="mt-3">
           <Form.Label>E-mail</Form.Label>
           <Form.Control
             type="email"
@@ -111,7 +111,7 @@ function RegisterScreen() {
             }}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId="password" className="mt-3">
+        <Form.Group controlId="formPassword" className="mt-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -122,14 +122,14 @@ function RegisterScreen() {
             }}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId="check_password" className="mt-3">
+        <Form.Group controlId="formVerifyPassword" className="mt-3">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
             placeholder="Confirm Password"
-            value={checkPassword}
+            value={verifyPassword}
             onChange={(e) => {
-              setCheckPassword(e.target.value);
+              setVerifyPassword(e.target.value);
             }}
           ></Form.Control>
         </Form.Group>

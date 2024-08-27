@@ -7,14 +7,14 @@ import {
   FETCH_USER_PENDING,
   FETCH_USER_FULLFILLED,
   FETCH_USER_REJECTED,
-  USER_REGISTER_PENDING,
-  USER_REGISTER_FULLFILLED,
-  USER_REGISTER_REJECTED,
-  USER_UPDATE_PENDING,
-  USER_UPDATE_FULLFILLED,
-  USER_UPDATE_REJECTED,
-  USER_UPDATE_RESET,
-  USER_REGISTER_RESET,
+  REGISTER_USER_PENDING,
+  REGISTER_USER_FULLFILLED,
+  REGISTER_USER_REJECTED,
+  UPDATE_USER_PENDING,
+  UPDATE_USER_FULLFILLED,
+  UPDATE_USER_REJECTED,
+  UPDATE_USER_RESET,
+  REGISTER_USER_RESET,
   FETCH_USERS_PENDING,
   FETCH_USERS_FULLFILLED,
   FETCH_USERS_REJECTED,
@@ -90,40 +90,40 @@ export const userProfileReducer = createReducer(
 
 export const userRegisterReducer = createReducer({}, (builder) => {
   builder
-    .addCase(USER_REGISTER_PENDING, (state) => {
+    .addCase(REGISTER_USER_PENDING, (state) => {
       state.loading = true;
       state.fullfilled = false;
       state.error = null;
     })
-    .addCase(USER_REGISTER_FULLFILLED, (state, action) => {
+    .addCase(REGISTER_USER_FULLFILLED, (state, action) => {
       state.loading = false;
       state.fullfilled = true;
     })
-    .addCase(USER_REGISTER_REJECTED, (state, action) => {
+    .addCase(REGISTER_USER_REJECTED, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     })
-    .addCase(USER_REGISTER_RESET, () => {
+    .addCase(REGISTER_USER_RESET, () => {
       return {};
     });
 });
 
 export const userUpdateReducer = createReducer({}, (builder) => {
   builder
-    .addCase(USER_UPDATE_PENDING, (state) => {
+    .addCase(UPDATE_USER_PENDING, (state) => {
       state.loading = true;
       state.fullfilled = false;
       state.error = null;
     })
-    .addCase(USER_UPDATE_FULLFILLED, (state, action) => {
+    .addCase(UPDATE_USER_FULLFILLED, (state, action) => {
       state.loading = false;
       state.fullfilled = true;
     })
-    .addCase(USER_UPDATE_REJECTED, (state, action) => {
+    .addCase(UPDATE_USER_REJECTED, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     })
-    .addCase(USER_UPDATE_RESET, () => {
+    .addCase(UPDATE_USER_RESET, () => {
       return {};
     });
 });

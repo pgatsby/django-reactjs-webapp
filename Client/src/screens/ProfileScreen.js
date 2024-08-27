@@ -8,7 +8,7 @@ import Message from "../components/Message.js";
 import FormContainer from "../components/FormContainer.js";
 import { fetchUserProfile, updateUserProfile } from "../actions/userActions.js";
 import { fetchUserOrders } from "../actions/orderActions.js";
-import { USER_UPDATE_RESET } from "../constants/userConstants.js";
+import { UPDATE_USER_RESET } from "../constants/userConstants.js";
 
 function ProfileScreen() {
   const dispatch = useDispatch();
@@ -34,36 +34,37 @@ function ProfileScreen() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
+  const [verifyPassword, setVerifyPassword] = useState("");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (!access) {
       navigate("/");
-    } else {
-      if (!user || fullfilled) {
-        dispatch({ type: USER_UPDATE_RESET });
-        dispatch(fetchUserProfile());
-        setPassword("");
-        setCheckPassword("");
-      } else {
-        setFirstname(user.first_name);
-        setLastname(user.last_name);
-        setUsername(user.username);
-        setEmail(user.email);
-      }
     }
-  }, [access, user, fullfilled, navigate, dispatch]);
+  }, [access, navigate]);
+
+  useEffect(() => {
+    if (!user || fullfilled) {
+      dispatch({ type: UPDATE_USER_RESET });
+      dispatch(fetchUserProfile());
+      setPassword("");
+      setVerifyPassword("");
+    }
+  }, [user, fullfilled, dispatch]);
 
   useEffect(() => {
     if (user) {
       dispatch(fetchUserOrders());
+      setFirstname(user.first_name);
+      setLastname(user.last_name);
+      setUsername(user.username);
+      setEmail(user.email);
     }
   }, [dispatch, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== checkPassword) {
+    if (password !== verifyPassword) {
       setMessage("Passwords do not match");
     } else {
       dispatch(
@@ -82,9 +83,9 @@ function ProfileScreen() {
           {error && <Message variant="danger">{error}</Message>}
           {loading && <Loader />}
           <Form onSubmit={submitHandler}>
-            <Row>
+            <Row className="mb-3">
               <Col>
-                <Form.Group controlId="firstname">
+                <Form.Group controlId="formFirstName">
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
                     type="firstname"
@@ -97,7 +98,7 @@ function ProfileScreen() {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="lastname">
+                <Form.Group controlId="formLastName">
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
                     type="lastname"
@@ -110,7 +111,7 @@ function ProfileScreen() {
                 </Form.Group>
               </Col>
             </Row>
-            <Form.Group controlId="username" className="mt-3">
+            <Form.Group controlId="formUsername" className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="username"
@@ -121,7 +122,7 @@ function ProfileScreen() {
                 }}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="email" className="mt-3">
+            <Form.Group controlId="formEmail" className="mb-3">
               <Form.Label>E-mail</Form.Label>
               <Form.Control
                 type="email"
@@ -132,7 +133,7 @@ function ProfileScreen() {
                 }}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="password" className="mt-3">
+            <Form.Group controlId="formPassword" className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
@@ -143,18 +144,18 @@ function ProfileScreen() {
                 }}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="check_password" className="mt-3">
+            <Form.Group controlId="formVerifyPassword" className="mb-3">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Confirm Password"
-                value={checkPassword}
+                value={verifyPassword}
                 onChange={(e) => {
-                  setCheckPassword(e.target.value);
+                  setVerifyPassword(e.target.value);
                 }}
               ></Form.Control>
             </Form.Group>
-            <Button className="mt-3" type="submit" variant="primary">
+            <Button className="mb-3" type="submit" variant="primary">
               Update
             </Button>
           </Form>
@@ -169,14 +170,14 @@ function ProfileScreen() {
         ) : errorOrders ? (
           <Message variant="danger">{errorOrders}</Message>
         ) : (
-          <Table striped responsive className="table-sm">
+          <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Date</th>
-                <th>Total</th>
-                <th>Paid</th>
-                <th>Status</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>STATUS</th>
               </tr>
             </thead>
             <tbody>
@@ -194,7 +195,9 @@ function ProfileScreen() {
                   </td>
                   <td>
                     <LinkContainer to={`/order/${order.id}`}>
-                      <Button className="btn-sm">View Order</Button>
+                      <Button variant="light" className="btn-sm">
+                        View Order
+                      </Button>
                     </LinkContainer>
                   </td>
                 </tr>

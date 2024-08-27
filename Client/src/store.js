@@ -2,6 +2,9 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   productListReducer,
   productDetailsReducer,
+  productDeleteReducer,
+  productCreateReducer,
+  productUpdateReducer,
 } from "./reducers/productReducers.js";
 import { cartReducer } from "./reducers/cartReducers.js";
 import {
@@ -16,7 +19,9 @@ import {
 } from "./reducers/userReducers.js";
 import {
   orderCreateReducer,
+  orderDeliverReducer,
   orderInfoReducer,
+  OrderListReducer,
   orderPayReducer,
   userOrdersReducer,
 } from "./reducers/orderReducer.js";
@@ -24,6 +29,9 @@ import {
 const rootReducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  productDelete: productDeleteReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
   userProfile: userProfileReducer,
@@ -37,6 +45,8 @@ const rootReducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderInfo: orderInfoReducer,
   orderPay: orderPayReducer,
+  orderDeliver: orderDeliverReducer,
+  orderList: OrderListReducer,
 });
 
 const store = configureStore({

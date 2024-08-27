@@ -59,6 +59,15 @@ def createOrderItems(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getOrders(request):
+    orders = Order.objects.all()[::-1]
+    serializer = OrderSerializer(orders, many=True)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getMyOrders(request):
     user = request.user
@@ -97,4 +106,17 @@ def updateOrderToPaid(request, pk):
 
     order.save()
 
-    return Response({"detail": "Order was paid"})
+    return Response({'detail': f'Order[{pk}] was paid'})
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateOrderToDelivered(request, pk):
+    order = Order.objects.get(id=pk)
+
+    order.isDelivered = True
+    order.deliveredAt = dt.now()
+
+    order.save()
+
+    return Response({'detail': f'Order[{pk}] marked as delivered'})

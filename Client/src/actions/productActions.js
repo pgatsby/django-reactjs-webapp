@@ -20,28 +20,30 @@ import {
   CREATE_PRODUCT_REVIEW_REJECTED,
 } from "../constants/productConstants";
 
-export const fetchProducts = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: FETCH_PRODUCTS_PENDING,
-    });
+export const fetchProducts =
+  (keyword = "") =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: FETCH_PRODUCTS_PENDING,
+      });
 
-    const { data } = await axios.get(`/api/products/`);
+      const { data } = await axios.get(`/api/products${keyword}`);
 
-    dispatch({
-      type: FETCH_PRODUCTS_FULLFILLED,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: FETCH_PRODUCTS_REJECTED,
-      payload:
-        error.response && error.response.data.detail
-          ? error.response.data.detail
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: FETCH_PRODUCTS_FULLFILLED,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: FETCH_PRODUCTS_REJECTED,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
 
 export const fetchProductById = (id) => async (dispatch) => {
   try {

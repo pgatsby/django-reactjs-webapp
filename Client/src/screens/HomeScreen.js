@@ -5,13 +5,18 @@ import Product from "../components/Product.js";
 import { fetchProducts } from "../actions/productActions.js";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
+import { useLocation } from "react-router-dom";
 
 function HomeScreen() {
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
+  const keyword = location.search ? location.search : "";
+
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    dispatch(fetchProducts(keyword));
+  }, [keyword, dispatch]);
 
   const {
     products = [],

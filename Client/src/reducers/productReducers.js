@@ -38,7 +38,9 @@ export const productListReducer = createReducer(
       })
       .addCase(FETCH_PRODUCTS_FULLFILLED, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.products = action.payload.products;
+        state.page = action.payload.page;
+        state.pages = action.payload.pages;
       })
       .addCase(FETCH_PRODUCTS_REJECTED, (state, action) => {
         state.loading = false;

@@ -33,6 +33,7 @@ h3 {
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.125);
   overflow: hidden;
+  z-index: 1;
 }
 
 .popup-content {

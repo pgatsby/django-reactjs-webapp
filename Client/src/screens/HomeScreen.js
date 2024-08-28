@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
-import Product from "../components/Product.js";
+import { useLocation } from "react-router-dom";
 import { fetchProducts } from "../actions/productActions.js";
+import Product from "../components/Product.js";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
-import { useLocation } from "react-router-dom";
+import Paginate from "../components/Paginate.js";
 
 function HomeScreen() {
   const dispatch = useDispatch();
 
   const location = useLocation();
 
-  const keyword = location.search ? location.search : "";
+  const keyword = location.search;
 
   useEffect(() => {
     dispatch(fetchProducts(keyword));
@@ -22,6 +23,8 @@ function HomeScreen() {
     products = [],
     loading,
     error,
+    page,
+    pages,
   } = useSelector((state) => state.productList);
 
   return (
@@ -32,13 +35,16 @@ function HomeScreen() {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {products.map((product) => (
-            <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
+        <div>
+          <Row>
+            {products.map((product) => (
+              <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+          <Paginate page={page} pages={pages} keyword={keyword} />
+        </div>
       )}
     </div>
   );

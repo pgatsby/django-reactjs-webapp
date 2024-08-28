@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 import PopupWindow from "../components/PopupWindow.js";
+import Paginate from "../components/Paginate.js";
 import {
   DELETE_PRODUCT_RESET,
   CREATE_PRODUCT_RESET,
@@ -19,14 +20,18 @@ import {
 function ProductListScreen() {
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
   const navigate = useNavigate();
+
+  let keyword = location.search;
 
   const [show, setShow] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
   const { user } = useSelector((state) => state.userProfile);
 
-  const { loading, error, products } = useSelector(
+  const { loading, error, products, page, pages } = useSelector(
     (state) => state.productList
   );
 
@@ -45,11 +50,11 @@ function ProductListScreen() {
 
   useEffect(() => {
     if (user && user.is_staff) {
-      dispatch(fetchProducts());
+      dispatch(fetchProducts(keyword));
     } else {
       navigate("/");
     }
-  }, [user, navigate, dispatch]);
+  }, [user, keyword, navigate, dispatch]);
 
   useEffect(() => {
     if (deleteProductFullfilled) {
@@ -171,6 +176,7 @@ function ProductListScreen() {
           </div>
         )}
       </PopupWindow>
+      <Paginate page={page} pages={pages} keyword={keyword} staff={true} />
     </div>
   );
 }

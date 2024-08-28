@@ -32,7 +32,7 @@ Clone the repository > django-reactjs-webapp
   git clone https://github.com/p-gatsby/django-reactjs-webapp.git
   ```
 
-Electron app installation ~ > django-reactjs-webapp > Client
+Electron app installation ~ > django-reactjs-webapp > client
 
 - Install node dependencies
   
@@ -61,7 +61,7 @@ Djano server installation ~ > django-reactjs-webapp
   ```sh
   python manage.py runserver
   ```
-- Run React App ~ > django-reactjs-webapp > Client
+- Run React App ~ > django-reactjs-webapp > client
   
   ```sh
   npm start

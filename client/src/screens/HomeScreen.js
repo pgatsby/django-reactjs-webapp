@@ -7,6 +7,7 @@ import Product from "../components/Product.js";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 import Paginate from "../components/Paginate.js";
+import ProductCarousel from "../components/ProductCarousel.js";
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -19,16 +20,13 @@ function HomeScreen() {
     dispatch(fetchProducts(keyword));
   }, [keyword, dispatch]);
 
-  const {
-    products = [],
-    loading,
-    error,
-    page,
-    pages,
-  } = useSelector((state) => state.productList);
+  const { products, loading, error, page, pages } = useSelector(
+    (state) => state.productList
+  );
 
   return (
     <div>
+      {!keyword && <ProductCarousel />}
       <h1>Latest Products </h1>
       {loading ? (
         <Loader />
@@ -37,6 +35,9 @@ function HomeScreen() {
       ) : (
         <div>
           <Row>
+            {products.length === 0 && (
+              <Message variant="danger">There are no products</Message>
+            )}
             {products.map((product) => (
               <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />

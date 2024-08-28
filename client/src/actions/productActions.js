@@ -6,6 +6,9 @@ import {
   FETCH_PRODUCT_BY_ID_PENDING,
   FETCH_PRODUCT_BY_ID_FULLFILLED,
   FETCH_PRODUCT_BY_ID_REJECTED,
+  FETCH_FEATURED_PRODUCTS_PENDING,
+  FETCH_FEATURED_PRODUCTS_FULLFILLED,
+  FETCH_FEATURED_PRODUCTS_REJECTED,
   DELETE_PRODUCT_PENDING,
   DELETE_PRODUCT_FULLFILLED,
   DELETE_PRODUCT_REJECTED,
@@ -44,6 +47,29 @@ export const fetchProducts =
       });
     }
   };
+
+export const fetchFeaturedProducts = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: FETCH_FEATURED_PRODUCTS_PENDING,
+    });
+
+    const { data } = await axios.get("/api/products/featured");
+
+    dispatch({
+      type: FETCH_FEATURED_PRODUCTS_FULLFILLED,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_FEATURED_PRODUCTS_REJECTED,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
 
 export const fetchProductById = (id) => async (dispatch) => {
   try {

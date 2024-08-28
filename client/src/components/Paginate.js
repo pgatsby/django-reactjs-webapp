@@ -12,7 +12,7 @@ function Paginate({ page, pages, keyword = "", staff }) {
       <Pagination>
         {[...Array(pages).keys()].map((p) => {
           const pageNumber = p + 1;
-          const isActive = pageNumber == page;
+          const isActive = pageNumber === Number(page);
 
           return (
             <LinkContainer

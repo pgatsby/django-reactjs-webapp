@@ -6,6 +6,9 @@ import {
   FETCH_PRODUCT_BY_ID_PENDING,
   FETCH_PRODUCT_BY_ID_FULLFILLED,
   FETCH_PRODUCT_BY_ID_REJECTED,
+  FETCH_FEATURED_PRODUCTS_PENDING,
+  FETCH_FEATURED_PRODUCTS_FULLFILLED,
+  FETCH_FEATURED_PRODUCTS_REJECTED,
   DELETE_PRODUCT_PENDING,
   DELETE_PRODUCT_FULLFILLED,
   DELETE_PRODUCT_REJECTED,
@@ -43,6 +46,29 @@ export const productListReducer = createReducer(
         state.pages = action.payload.pages;
       })
       .addCase(FETCH_PRODUCTS_REJECTED, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  }
+);
+
+export const productFeaturedReducer = createReducer(
+  {
+    products: [],
+    loading: false,
+    error: null,
+  },
+  (builder) => {
+    builder
+      .addCase(FETCH_FEATURED_PRODUCTS_PENDING, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(FETCH_FEATURED_PRODUCTS_FULLFILLED, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(FETCH_FEATURED_PRODUCTS_REJECTED, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

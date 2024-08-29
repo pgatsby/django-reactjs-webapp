@@ -9,8 +9,8 @@
 <img width="492" alt="productpage" src="https://github.com/p-gatsby/DRJS/assets/106583795/4f6f05f4-db00-4e77-924f-49e42584ae97">
 </div>
 
-
 This Django and ReactJS application demonstrates the effectiveness of their combination in creating a mock e-commerce website.
+
 <!-- GETTING STARTED -->
 
 ## Getting Started
@@ -28,14 +28,14 @@ Before you begin, ensure you have the following installed:
 
 Clone the repository > django-reactjs-webapp
 
-  ```bash
-  git clone https://github.com/p-gatsby/django-reactjs-webapp.git
-  ```
+```bash
+git clone https://github.com/p-gatsby/django-reactjs-webapp.git
+```
 
 Electron app installation ~ > django-reactjs-webapp > client
 
 - Install node dependencies
-  
+
   ```sh
   npm install
   ```
@@ -54,15 +54,21 @@ Djano server installation ~ > django-reactjs-webapp
   pip install -r requirements.txt
   ```
 
+- Collect static files
+  ```sh
+  python manage.py collectstatic
+  ```
+
 ### Running the app
 
-- Run Django  ~ > django-reactjs-webapp
-  
+- Run Django ~ > django-reactjs-webapp
+
   ```sh
   python manage.py runserver
   ```
+
 - Run React App ~ > django-reactjs-webapp > client
-  
+
   ```sh
   npm start
   ```

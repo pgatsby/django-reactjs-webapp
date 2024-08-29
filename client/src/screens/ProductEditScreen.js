@@ -104,7 +104,7 @@ function ProductEditScreen() {
         config
       );
 
-      setImage(data);
+      setImage(data.detail);
       setUploading(false);
     } catch (error) {
       setUploading(false);
@@ -119,7 +119,6 @@ function ProductEditScreen() {
       {loading && <Loader />}
       <FormContainer center xs={12} md={6}>
         <Form onSubmit={submitHandler}>
-
           <Form.Group controlId="formProductName" className="mb-3">
             <Form.Label>Product Name</Form.Label>
             <Form.Control

@@ -15,9 +15,9 @@ def getProducts(request):
     query = request.query_params.get('keyword') or ''
     page = request.query_params.get('page') or 1
 
-    products = Product.objects.filter(name__icontains=query)
+    products = Product.objects.filter(name__icontains=query).order_by('id')
 
-    paginator = Paginator(products, 2)
+    paginator = Paginator(products, 5)
 
     try:
         products = paginator.page(page)
@@ -33,14 +33,15 @@ def getProducts(request):
 @api_view(['GET'])
 def getProduct(request, pk):
     product = Product.objects.get(id=pk)
-    
+
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getFeaturedProducts(request):
     products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
-    
+
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
@@ -102,7 +103,7 @@ def uploadImage(request, pk):
     product.image = files.get('image')
     product.save()
 
-    return Response({'detail': f'Product[{pk}] image uploaded.'})
+    return Response({'detail': 'Image was uploaded.'})
 
 
 @api_view(['POST'])

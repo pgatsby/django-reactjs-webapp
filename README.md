@@ -5,8 +5,8 @@
 ## About The Project
 
 <div align="center"> 
-<img width="492" alt="productpage" src="https://github.com/user-attachments/assets/f56a0bda-a8d1-4b18-8275-aa35acd7823c">
-<img width="492" alt="orderpage" src="https://github.com/user-attachments/assets/71c92370-4a9a-4b3a-b8f9-968331cd76c7">
+<img width="492" alt="productpage" src="https://github.com/user-attachments/assets/074e29dd-8ae2-45ea-acec-cefb2cfe4409">
+<img width="492" alt="orderpage" src="https://github.com/user-attachments/assets/d68758c6-b3a5-4822-9eeb-02ac2c070131">
 </div>
 
 This Django and ReactJS application demonstrates the effectiveness of their combination in creating a mock e-commerce website.

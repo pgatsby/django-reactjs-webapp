@@ -51,6 +51,26 @@ Before you begin, ensure you have the following installed:
    pip install -r requirements.txt
    ```
 
+### Environmental Variables
+
+   Before running the application, you need to set up the `.env` file in the root directory. Create a file named `.env` and include the following environment variables:
+
+   ```bash
+   ALLOWED_HOSTS=your_allowed_hosts
+   AWS_ACCESS_KEY_ID=your_aws_access_key_id
+   AWS_S3_REGION_NAME=your_aws_s3_region_name
+   AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+   AWS_STORAGE_BUCKET_NAME=your_aws_storage_bucket_name
+   DBENGINE=your_db_engine
+   DBHOST=your_db_host
+   DBNAME=your_db_name
+   DBUSER=your_db_user
+   DBPASSWORD=your_db_password
+   DBPORT=your_db_port
+   DEBUG=True
+   SECRET_KEY=your_secret_key
+   ```
+
 ### Before running the app
 
 Before starting the application, you need to prepare the Django backend by applying database migrations and collecting static files. Follow these steps:

@@ -30,7 +30,7 @@ Before you begin, ensure you have the following installed:
    Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/p-gatsby/django-reactjs-webapp.git
+   git clone https://github.com/pgatsby/django-reactjs-webapp.git
    ```
 
 2. **React App Installation**  
